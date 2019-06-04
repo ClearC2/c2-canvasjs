@@ -47,7 +47,8 @@ export default class Funnel extends Component {
       let parsed = []
       let total = 0
       data.forEach((item, i) => {
-        const count = item[dataKey] || 0
+        let count = +item[dataKey] || 0
+        if (isNaN(count)) count = 0
         const label = item[dataLabel] || null
         if (label) {
           total = total + count

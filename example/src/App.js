@@ -5,23 +5,23 @@ export default class App extends Component {
   state = {
     data: [
       {
-        count: 1400,
+        count: '1400',
         label: 'Prospects'
       },
       {
-        count: 1212,
+        count: '1212',
         label: 'Qualified Prospects'
       },
       {
-        count: 1080,
+        count: '1080',
         label: 'Proposals'
       },
       {
-        count: 665,
+        count: '665',
         label: 'Negotiation'
       },
       {
-        count: 578,
+        count: '578',
         label: 'Final Sales'
       }
     ]
