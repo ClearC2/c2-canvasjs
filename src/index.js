@@ -1,3 +1,10 @@
-import dataProvider from './dataProvider'
+import CanvasJSReact from '../canvasjs/canvasjs.react'
+import Funnel from './Charts/Funnel'
 
-export default dataProvider
+const {CanvasJSChart} = CanvasJSReact
+
+export default CanvasJSChart
+
+export {
+  Funnel
+}
