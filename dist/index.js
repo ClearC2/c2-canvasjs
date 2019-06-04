@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Funnel = undefined;
 
-var _canvasjs = require('../canvasjs/canvasjs.react');
+var _canvasjs = require('./canvasjs.react');
 
 var _canvasjs2 = _interopRequireDefault(_canvasjs);
 
