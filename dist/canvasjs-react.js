@@ -1,0 +1,114 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _canvasjs = require('../canvasjs/canvasjs.min');
+
+var _canvasjs2 = _interopRequireDefault(_canvasjs);
+
+var _lodash = require('lodash');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var CanvasJSChart = function (_Component) {
+  _inherits(CanvasJSChart, _Component);
+
+  function CanvasJSChart() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, CanvasJSChart);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = CanvasJSChart.__proto__ || Object.getPrototypeOf(CanvasJSChart)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+      options: _this.props.options
+    }, _this.verifyHeight = function () {
+      if (!_this.state.options.height) {
+        _this.setState(function (s) {
+          var options = s.options;
+
+          if (_this.props.style.height) {
+            options.height = _this.props.style.height;
+          } else if (_this.props.options.height) {
+            options.height = _this.props.options.height;
+          } else {
+            options.height = '250px';
+          }
+          if (typeof options.height === 'number') options.height = options.height + 'px';
+          return { options: options };
+        });
+      }
+    }, _this.chartContainerId = 'canvasjs-react-chart-container-' + CanvasJSChart._cjsContainerId++, _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(CanvasJSChart, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.chart = new _canvasjs2.default.Chart(this.chartContainerId, this.state.options);
+      this.verifyHeight();
+      this.chart.render();
+    }
+  }, {
+    key: 'shouldComponentUpdate',
+    value: function shouldComponentUpdate(p) {
+      return !(0, _lodash.isEqual)(p.options, this.props.options) || !(0, _lodash.isEqual)(p.style, this.props.style);
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate() {
+      this.chart.options = this.state.options;
+      this.verifyHeight();
+      this.chart.render();
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this.chart.destroy();
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement('div', { id: this.chartContainerId, style: this.props.style });
+    }
+  }]);
+
+  return CanvasJSChart;
+}(_react.Component);
+
+CanvasJSChart._cjsContainerId = 0;
+CanvasJSChart.propTypes = {
+  options: _propTypes2.default.object,
+  style: _propTypes2.default.object
+};
+CanvasJSChart.defaultProps = {
+  options: {
+    height: '250px'
+  },
+  style: {
+    width: '100%',
+    position: 'relative'
+  }
+};
+exports.default = { CanvasJSChart: CanvasJSChart, CanvasJS: _canvasjs2.default };

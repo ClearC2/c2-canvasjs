@@ -1,4 +1,4 @@
-import CanvasJSReact from './canvasjs.react'
+import CanvasJSReact from './canvasjs-react'
 import Funnel from './Charts/Funnel'
 
 const {CanvasJSChart} = CanvasJSReact

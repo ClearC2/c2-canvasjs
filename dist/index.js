@@ -5,9 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Funnel = undefined;
 
-var _canvasjs = require('./canvasjs.react');
+var _canvasjsReact = require('./canvasjs-react');
 
-var _canvasjs2 = _interopRequireDefault(_canvasjs);
+var _canvasjsReact2 = _interopRequireDefault(_canvasjsReact);
 
 var _Funnel = require('./Charts/Funnel');
 
@@ -15,6 +15,6 @@ var _Funnel2 = _interopRequireDefault(_Funnel);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var CanvasJSChart = _canvasjs2.default.CanvasJSChart;
+var CanvasJSChart = _canvasjsReact2.default.CanvasJSChart;
 exports.default = CanvasJSChart;
 exports.Funnel = _Funnel2.default;
