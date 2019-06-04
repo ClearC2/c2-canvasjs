@@ -101,7 +101,6 @@ export default class Funnel extends Component {
 
   render () {
     const {options, show} = this.state
-    console.log(options)
-    return show ? <Chart options={options} /> : null // quick fix to make this rerender when data is updated - JRA 06/04/2019
+    return show ? <Chart {...this.props} options={options} /> : null // quick fix to make this rerender when data is updated - JRA 06/04/2019
   }
 }
