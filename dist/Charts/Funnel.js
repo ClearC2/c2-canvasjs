@@ -83,13 +83,13 @@ var Funnel = function (_Component) {
         if (percentType === 'inclusive') {
           var left = total;
           parsed.map(function (item) {
-            item.percent = +(left / total * 100).toFixed(2);
+            item.percentage = (left / total * 100).toFixed(2);
             left = left - item.y;
             return item;
           });
         } else {
           parsed.map(function (item) {
-            item.percent = +(item.y / total * 100).toFixed();
+            item.percentage = (item.y / total * 100).toFixed(2);
             return item;
           });
         }
@@ -128,6 +128,7 @@ var Funnel = function (_Component) {
           options = _state.options,
           show = _state.show;
 
+      console.log(options);
       return show ? _react2.default.createElement(_index2.default, { options: options }) : null; // quick fix to make this rerender when data is updated - JRA 06/04/2019
     }
   }]);

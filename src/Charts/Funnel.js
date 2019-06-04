@@ -63,13 +63,13 @@ export default class Funnel extends Component {
       if (percentType === 'inclusive') {
         let left = total
         parsed.map(item => {
-          item.percent = +((left / total) * 100).toFixed(2)
+          item.percentage = ((left / total) * 100).toFixed(2)
           left = left - item.y
           return item
         })
       } else {
         parsed.map(item => {
-          item.percent = +((item.y / total) * 100).toFixed()
+          item.percentage = ((item.y / total) * 100).toFixed(2)
           return item
         })
       }
@@ -101,6 +101,7 @@ export default class Funnel extends Component {
 
   render () {
     const {options, show} = this.state
+    console.log(options)
     return show ? <Chart options={options} /> : null // quick fix to make this rerender when data is updated - JRA 06/04/2019
   }
 }
