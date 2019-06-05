@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 import CanvasJS from '../canvasjs/canvasjs.min'
 import {isEqual} from 'lodash'
 
-class CanvasJSChart extends Component {
+export {CanvasJS}
+
+export default class CanvasJSChart extends Component {
   static _cjsContainerId = 0
   chartContainerId = 'canvasjs-react-chart-container-' + CanvasJSChart._cjsContainerId++
 
@@ -57,5 +59,3 @@ class CanvasJSChart extends Component {
     return <div id={this.chartContainerId} style={this.props.style} />
   }
 }
-
-export default {CanvasJSChart, CanvasJS}
