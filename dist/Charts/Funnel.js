@@ -4,8 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
@@ -45,10 +43,11 @@ var Funnel = function (_Component) {
     }
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Funnel.__proto__ || Object.getPrototypeOf(Funnel)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      show: true,
       options: {
         animationEnabled: true,
         data: [{
+          click: _this.props.onClick,
+          explodeOnClick: false,
           type: 'funnel',
           toolTipContent: _this.props.toolTipContent,
           indexLabelPlacement: _this.props.indexLabelPlacement,
@@ -57,9 +56,11 @@ var Funnel = function (_Component) {
         }]
       }
     }, _this.parseData = function (data) {
-      _this.setState(function () {
-        return { show: false };
-      }, function () {
+      data = typeof data.toList === 'function' ? data.toList() : data;
+      data = typeof data.toJS === 'function' ? data.toJS() : data;
+      if (data && !Array.isArray(data)) {
+        console.error('The data provided to this grid is malformed. The data should be an array of data objects, but instead found', data);
+      } else {
         var _this$props = _this.props,
             dataKey = _this$props.dataKey,
             dataLabel = _this$props.dataLabel,
@@ -99,9 +100,9 @@ var Funnel = function (_Component) {
           var options = s.options;
 
           options.data[0].dataPoints = parsed;
-          return { options: options, show: true };
+          return { options: options };
         });
-      });
+      }
     }, _this.verifyPercentType = function (percentType) {
       if (percentType && percentType !== 'exclusive' && percentType !== 'inclusive') {
         console.warn('The percentType of ' + percentType + ' is not supported. Falling back to \'exclusive\' (percentages calculated independently).'); // eslint-disable-line
@@ -126,11 +127,10 @@ var Funnel = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _state = this.state,
-          options = _state.options,
-          show = _state.show;
+      var options = this.state.options;
+      var style = this.props.style;
 
-      return show ? _react2.default.createElement(_index2.default, _extends({}, this.props, { options: options })) : null; // quick fix to make this rerender when data is updated - JRA 06/04/2019
+      return _react2.default.createElement(_index2.default, { style: style, options: options });
     }
   }]);
 
@@ -141,10 +141,12 @@ Funnel.propTypes = {
   toolTipContent: _propTypes2.default.string,
   indexLabel: _propTypes2.default.string,
   indexLabelPlacement: _propTypes2.default.string,
-  data: _propTypes2.default.array,
+  data: _propTypes2.default.oneOfType([_propTypes2.default.array, _propTypes2.default.object]),
   dataKey: _propTypes2.default.string,
   dataLabel: _propTypes2.default.string,
-  percentType: _propTypes2.default.string
+  percentType: _propTypes2.default.string,
+  style: _propTypes2.default.object,
+  onClick: _propTypes2.default.func
 };
 Funnel.defaultProps = {
   toolTipContent: '<b>{label}</b>: {y} <b>({percentage}%)</b>',

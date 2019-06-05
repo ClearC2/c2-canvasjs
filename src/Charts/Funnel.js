@@ -8,7 +8,7 @@ export default class Funnel extends Component {
     toolTipContent: PropTypes.string,
     indexLabel: PropTypes.string,
     indexLabelPlacement: PropTypes.string,
-    data: PropTypes.array,
+    data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     dataKey: PropTypes.string,
     dataLabel: PropTypes.string,
     percentType: PropTypes.string,
@@ -44,7 +44,11 @@ export default class Funnel extends Component {
   }
 
   parseData = data => {
-    this.setState(() => ({show: false}), () => {
+    data = typeof data.toList === 'function' ? data.toList() : data
+    data = typeof data.toJS === 'function' ? data.toJS() : data
+    if (data && !Array.isArray(data)) {
+      console.error('The data provided to this grid is malformed. The data should be an array of data objects, but instead found', data)
+    } else {
       const {dataKey, dataLabel, percentType} = this.props
       const datamap = {} // keeping track of order that the data was passed in - JRA 06/04/2019
       let parsed = []
@@ -81,7 +85,7 @@ export default class Funnel extends Component {
         options.data[0].dataPoints = parsed
         return {options}
       })
-    })
+    }
   }
 
   verifyPercentType = percentType => {

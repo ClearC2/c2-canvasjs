@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.CanvasJS = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -28,6 +29,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+exports.CanvasJS = _canvasjs2.default;
+
 var CanvasJSChart = function (_Component) {
   _inherits(CanvasJSChart, _Component);
 
@@ -42,44 +45,30 @@ var CanvasJSChart = function (_Component) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = CanvasJSChart.__proto__ || Object.getPrototypeOf(CanvasJSChart)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = CanvasJSChart.__proto__ || Object.getPrototypeOf(CanvasJSChart)).call.apply(_ref, [this].concat(args))), _this), _this.chartContainerId = 'canvasjs-react-chart-container-' + CanvasJSChart._cjsContainerId++, _this.state = {
       options: _this.props.options
-    }, _this.verifyHeight = function () {
-      if (!_this.state.options.height) {
-        _this.setState(function (s) {
-          var options = s.options;
-
-          if (_this.props.style.height) {
-            options.height = _this.props.style.height;
-          } else if (_this.props.options.height) {
-            options.height = _this.props.options.height;
-          } else {
-            options.height = '250px';
-          }
-          if (typeof options.height === 'number') options.height = options.height + 'px';
-          return { options: options };
-        });
-      }
-    }, _this.chartContainerId = 'canvasjs-react-chart-container-' + CanvasJSChart._cjsContainerId++, _temp), _possibleConstructorReturn(_this, _ret);
+    }, _this.updateOptions = function () {
+      _this.setState(function () {
+        return { options: _this.props.options };
+      });
+    }, _this.updateChart = function () {
+      _this.chart.options = _this.state.options;
+      _this.chart.render();
+    }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(CanvasJSChart, [{
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(p, s) {
+      if (!(0, _lodash.isEqual)(this.props.options, p.options) || !(0, _lodash.isEqual)(this.props.style, p.style)) {
+        this.updateOptions();
+      }
+      this.updateChart();
+    }
+  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.chart = new _canvasjs2.default.Chart(this.chartContainerId, this.state.options);
-      this.verifyHeight();
-      this.chart.render();
-    }
-  }, {
-    key: 'shouldComponentUpdate',
-    value: function shouldComponentUpdate(p) {
-      return !(0, _lodash.isEqual)(p.options, this.props.options) || !(0, _lodash.isEqual)(p.style, this.props.style);
-    }
-  }, {
-    key: 'componentDidUpdate',
-    value: function componentDidUpdate() {
-      this.chart.options = this.state.options;
-      this.verifyHeight();
       this.chart.render();
     }
   }, {
@@ -103,12 +92,11 @@ CanvasJSChart.propTypes = {
   style: _propTypes2.default.object
 };
 CanvasJSChart.defaultProps = {
-  options: {
-    height: '250px'
-  },
+  options: {},
   style: {
     width: '100%',
+    height: '100%',
     position: 'relative'
   }
 };
-exports.default = { CanvasJSChart: CanvasJSChart, CanvasJS: _canvasjs2.default };
+exports.default = CanvasJSChart;
