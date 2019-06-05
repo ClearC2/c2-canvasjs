@@ -36,8 +36,8 @@ export default class App extends Component {
           dataKey='count'
           dataLabel='label'
           style={{
-            height: '75%',
-            width: 850
+            height: '50%',
+            width: '75%'
           }}
         />
       </div>

@@ -5,17 +5,18 @@ import {isEqual} from 'lodash'
 
 class CanvasJSChart extends Component {
   static _cjsContainerId = 0
+  chartContainerId = 'canvasjs-react-chart-container-' + CanvasJSChart._cjsContainerId++
+
   static propTypes = {
     options: PropTypes.object,
     style: PropTypes.object
   }
 
   static defaultProps = {
-    options: {
-      height: '250px'
-    },
+    options: {},
     style: {
       width: '100%',
+      height: '100%',
       position: 'relative'
     }
   }
@@ -24,41 +25,27 @@ class CanvasJSChart extends Component {
     options: this.props.options
   }
 
-  verifyHeight = () => {
-    if (!this.state.options.height) {
-      this.setState(s => {
-        const {options} = s
-        if (this.props.style.height) {
-          options.height = this.props.style.height
-        } else if (this.props.options.height) {
-          options.height = this.props.options.height
-        } else {
-          options.height = '250px'
-        }
-        if (typeof options.height === 'number') options.height = options.height + 'px'
-        return {options}
-      })
-    }
+  updateOptions = () => {
+    this.setState(() => ({options: this.props.options}))
   }
 
-  chartContainerId = 'canvasjs-react-chart-container-' + CanvasJSChart._cjsContainerId++
-
-  componentDidMount () {
-    this.chart = new CanvasJS.Chart(this.chartContainerId, this.state.options)
-    this.verifyHeight()
+  updateChart = () => {
+    this.chart.options = this.state.options
     this.chart.render()
   }
 
-  shouldComponentUpdate (p) {
-    return (
-      !isEqual(p.options, this.props.options) ||
-      !isEqual(p.style, this.props.style)
-    )
+  componentDidUpdate (p, s) {
+    if (
+      !isEqual(this.props.options, p.options) ||
+      !isEqual(this.props.style, p.style)
+    ) {
+      this.updateOptions()
+    }
+    this.updateChart()
   }
 
-  componentDidUpdate () {
-    this.chart.options = this.state.options
-    this.verifyHeight()
+  componentDidMount () {
+    this.chart = new CanvasJS.Chart(this.chartContainerId, this.state.options)
     this.chart.render()
   }
 

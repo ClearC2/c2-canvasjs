@@ -11,7 +11,8 @@ export default class Funnel extends Component {
     data: PropTypes.array,
     dataKey: PropTypes.string,
     dataLabel: PropTypes.string,
-    percentType: PropTypes.string
+    percentType: PropTypes.string,
+    style: PropTypes.object
   }
 
   static defaultProps = {
@@ -25,11 +26,11 @@ export default class Funnel extends Component {
   }
 
   state = {
-    show: true,
     options: {
       animationEnabled: true,
       data: [
         {
+          click: (a) => console.log(a),
           type: 'funnel',
           toolTipContent: this.props.toolTipContent,
           indexLabelPlacement: this.props.indexLabelPlacement,
@@ -76,7 +77,7 @@ export default class Funnel extends Component {
       this.setState(s => {
         const {options} = s
         options.data[0].dataPoints = parsed
-        return {options, show: true}
+        return {options}
       })
     })
   }
@@ -100,7 +101,8 @@ export default class Funnel extends Component {
   }
 
   render () {
-    const {options, show} = this.state
-    return show ? <Chart {...this.props} options={options} /> : null // quick fix to make this rerender when data is updated - JRA 06/04/2019
+    const {options} = this.state
+    const {style} = this.props
+    return <Chart style={style} options={options} />
   }
 }
