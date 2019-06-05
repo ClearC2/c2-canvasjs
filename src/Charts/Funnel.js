@@ -12,7 +12,8 @@ export default class Funnel extends Component {
     dataKey: PropTypes.string,
     dataLabel: PropTypes.string,
     percentType: PropTypes.string,
-    style: PropTypes.object
+    style: PropTypes.object,
+    onClick: PropTypes.func
   }
 
   static defaultProps = {
@@ -30,7 +31,8 @@ export default class Funnel extends Component {
       animationEnabled: true,
       data: [
         {
-          click: (a) => console.log(a),
+          click: this.props.onClick,
+          explodeOnClick: false,
           type: 'funnel',
           toolTipContent: this.props.toolTipContent,
           indexLabelPlacement: this.props.indexLabelPlacement,
