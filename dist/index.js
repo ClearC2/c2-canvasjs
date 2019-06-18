@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Funnel = exports.CanvasJS = undefined;
+exports.Bar = exports.Funnel = exports.CanvasJS = undefined;
 
 var _canvasjsReact = require('./canvasjs-react');
 
@@ -13,8 +13,13 @@ var _Funnel = require('./Charts/Funnel');
 
 var _Funnel2 = _interopRequireDefault(_Funnel);
 
+var _Bar = require('./Charts/Bar');
+
+var _Bar2 = _interopRequireDefault(_Bar);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _canvasjsReact2.default;
 exports.CanvasJS = _canvasjsReact.CanvasJS;
 exports.Funnel = _Funnel2.default;
+exports.Bar = _Bar2.default;

@@ -28,27 +28,27 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Funnel = function (_Component) {
-  _inherits(Funnel, _Component);
+var Bar = function (_Component) {
+  _inherits(Bar, _Component);
 
-  function Funnel() {
+  function Bar() {
     var _ref;
 
     var _temp, _this, _ret;
 
-    _classCallCheck(this, Funnel);
+    _classCallCheck(this, Bar);
 
     for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Funnel.__proto__ || Object.getPrototypeOf(Funnel)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Bar.__proto__ || Object.getPrototypeOf(Bar)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
       options: {
         animationEnabled: true,
         data: [{
           click: _this.props.onClick,
           explodeOnClick: false,
-          type: 'funnel',
+          type: _this.props.horizontal ? 'bar' : 'column',
           toolTipContent: _this.props.toolTipContent,
           indexLabelPlacement: _this.props.indexLabelPlacement,
           indexLabel: _this.props.indexLabel,
@@ -63,8 +63,7 @@ var Funnel = function (_Component) {
       } else {
         var _this$props = _this.props,
             dataKey = _this$props.dataKey,
-            dataLabel = _this$props.dataLabel,
-            percentType = _this$props.percentType;
+            dataLabel = _this$props.dataLabel;
 
         var datamap = {}; // keeping track of order that the data was passed in - JRA 06/04/2019
         var parsed = [];
@@ -83,19 +82,10 @@ var Funnel = function (_Component) {
             }
           }
         });
-        if (percentType === 'inclusive') {
-          var left = total;
-          parsed.map(function (item) {
-            item.percentage = (left / total * 100).toFixed(2);
-            left = left - item.y;
-            return item;
-          });
-        } else {
-          parsed.map(function (item) {
-            item.percentage = (item.y / total * 100).toFixed(2);
-            return item;
-          });
-        }
+        parsed.map(function (item) {
+          item.percentage = (item.y / total * 100).toFixed(2);
+          return item;
+        });
         _this.setState(function (s) {
           var options = s.options;
 
@@ -103,21 +93,14 @@ var Funnel = function (_Component) {
           return { options: options };
         });
       }
-    }, _this.verifyPercentType = function (percentType) {
-      if (percentType && percentType !== 'exclusive' && percentType !== 'inclusive') {
-        console.warn('The percentType of ' + percentType + ' is not supported. Falling back to \'exclusive\' (percentages calculated independently).'); // eslint-disable-line
-      }
     }, _this.componentDidMount = function () {
-      var _this$props2 = _this.props,
-          data = _this$props2.data,
-          percentType = _this$props2.percentType;
+      var data = _this.props.data;
 
       _this.parseData(data);
-      _this.verifyPercentType(percentType);
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
-  _createClass(Funnel, [{
+  _createClass(Bar, [{
     key: 'componentDidUpdate',
     value: function componentDidUpdate(p) {
       if (!(0, _lodash.isEqual)(p.data, this.props.data)) {
@@ -134,27 +117,27 @@ var Funnel = function (_Component) {
     }
   }]);
 
-  return Funnel;
+  return Bar;
 }(_react.Component);
 
-Funnel.propTypes = {
+Bar.propTypes = {
   toolTipContent: _propTypes2.default.string,
   indexLabel: _propTypes2.default.string,
   indexLabelPlacement: _propTypes2.default.string,
   data: _propTypes2.default.oneOfType([_propTypes2.default.array, _propTypes2.default.object]),
   dataKey: _propTypes2.default.string,
   dataLabel: _propTypes2.default.string,
-  percentType: _propTypes2.default.string,
   style: _propTypes2.default.object,
-  onClick: _propTypes2.default.func
+  onClick: _propTypes2.default.func,
+  horizontal: _propTypes2.default.bool
 };
-Funnel.defaultProps = {
-  toolTipContent: '<b>{label}</b>: {y} <b>({percentage}%)</b>',
-  indexLabel: '{label} {y} ({percentage}%)',
+Bar.defaultProps = {
+  toolTipContent: '<b>{label}</b>: {y}',
+  indexLabel: '{y}',
   indexLabelPlacement: 'outside',
   data: [],
   dataKey: 'count',
   dataLabel: 'label',
-  percentType: 'exclusive'
+  horizontal: false
 };
-exports.default = Funnel;
+exports.default = Bar;

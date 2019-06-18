@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Chart from '../index'
 import {isEqual} from 'lodash'
 
-export default class Funnel extends Component {
+export default class Bar extends Component {
   static propTypes = {
     toolTipContent: PropTypes.string,
     indexLabel: PropTypes.string,
@@ -11,19 +11,19 @@ export default class Funnel extends Component {
     data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     dataKey: PropTypes.string,
     dataLabel: PropTypes.string,
-    percentType: PropTypes.string,
     style: PropTypes.object,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    horizontal: PropTypes.bool
   }
 
   static defaultProps = {
-    toolTipContent: '<b>{label}</b>: {y} <b>({percentage}%)</b>',
-    indexLabel: '{label} {y} ({percentage}%)',
+    toolTipContent: '<b>{label}</b>: {y}',
+    indexLabel: '{y}',
     indexLabelPlacement: 'outside',
     data: [],
     dataKey: 'count',
     dataLabel: 'label',
-    percentType: 'exclusive'
+    horizontal: false
   }
 
   state = {
@@ -33,7 +33,7 @@ export default class Funnel extends Component {
         {
           click: this.props.onClick,
           explodeOnClick: false,
-          type: 'funnel',
+          type: this.props.horizontal ? 'bar' : 'column',
           toolTipContent: this.props.toolTipContent,
           indexLabelPlacement: this.props.indexLabelPlacement,
           indexLabel: this.props.indexLabel,
@@ -49,7 +49,7 @@ export default class Funnel extends Component {
     if (data && !Array.isArray(data)) {
       console.error('The data provided to this chart is malformed. The data should be an array of data objects, but instead found', data) // eslint-disable-line
     } else {
-      const {dataKey, dataLabel, percentType} = this.props
+      const {dataKey, dataLabel} = this.props
       const datamap = {} // keeping track of order that the data was passed in - JRA 06/04/2019
       let parsed = []
       let total = 0
@@ -67,19 +67,10 @@ export default class Funnel extends Component {
           }
         }
       })
-      if (percentType === 'inclusive') {
-        let left = total
-        parsed.map(item => {
-          item.percentage = ((left / total) * 100).toFixed(2)
-          left = left - item.y
-          return item
-        })
-      } else {
-        parsed.map(item => {
-          item.percentage = ((item.y / total) * 100).toFixed(2)
-          return item
-        })
-      }
+      parsed.map(item => {
+        item.percentage = ((item.y / total) * 100).toFixed(2)
+        return item
+      })
       this.setState(s => {
         const {options} = s
         options.data[0].dataPoints = parsed
@@ -88,16 +79,9 @@ export default class Funnel extends Component {
     }
   }
 
-  verifyPercentType = percentType => {
-    if (percentType && percentType !== 'exclusive' && percentType !== 'inclusive') {
-      console.warn(`The percentType of ${percentType} is not supported. Falling back to 'exclusive' (percentages calculated independently).`) // eslint-disable-line
-    }
-  }
-
   componentDidMount = () => {
-    const {data, percentType} = this.props
+    const {data} = this.props
     this.parseData(data)
-    this.verifyPercentType(percentType)
   }
 
   componentDidUpdate (p) {
