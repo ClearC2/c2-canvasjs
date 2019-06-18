@@ -69,16 +69,16 @@ var Funnel = function (_Component) {
         var datamap = {}; // keeping track of order that the data was passed in - JRA 06/04/2019
         var parsed = [];
         var total = 0;
-        data.forEach(function (item, i) {
+        data.forEach(function (item) {
           var count = dataKey === null ? 1 : +item[dataKey] || 0;
           if (isNaN(count)) count = 0;
-          var label = item[dataLabel] || null;
-          if (label) {
+          var label = item[dataLabel];
+          if (typeof label !== 'undefined') {
             total = total + count;
             if (datamap[label] >= 0) {
               parsed[datamap[label]].y = parsed[datamap[label]].y + count;
             } else {
-              datamap[label] = i;
+              datamap[label] = Object.keys(datamap).length;
               parsed.push({ label: label, y: count });
             }
           }
