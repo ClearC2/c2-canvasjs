@@ -13,4 +13,11 @@ body {
   height: 100%;
   display: flex;
   overflow: auto;
+  flex-direction: column;
+}
+
+.page-row {
+  display: flex;
+  flex-direction: row;
+  height: 20%;
 }

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Funnel, Bar} from 'c2-canvasjs'
+import {Funnel, Bar, Pie} from 'c2-canvasjs'
 
 export default class App extends Component {
   state = {
@@ -30,37 +30,36 @@ export default class App extends Component {
   render () {
     const {data} = this.state
     return (
-      <div className='page-container '>
-        <Funnel
-          data={data}
-          dataKey='count'
-          dataLabel='label'
-          style={{
-            height: '20%',
-            width: '20%'
-          }}
-        />
-        <Bar
-          data={data}
-          dataKey='count'
-          dataLabel='label'
-          style={{
-            height: '20%',
-            width: '20%',
-            marginLeft: 20
-          }}
-        />
-        <Bar
-          horizontal
-          data={data}
-          dataKey='count'
-          dataLabel='label'
-          style={{
-            height: '20%',
-            width: '20%',
-            marginLeft: 20
-          }}
-        />
+      <div className='page-container'>
+        <div className='page-row'>
+          <Funnel
+            data={data}
+            dataKey='count'
+            dataLabel='label'
+          />
+          <Bar
+            data={data}
+            dataKey='count'
+            dataLabel='label'
+          />
+          <Bar
+            horizontal
+            data={data}
+            dataKey='count'
+            dataLabel='label'
+          />
+          <Pie
+            data={data}
+            dataKey='count'
+            dataLabel='label'
+          />
+          <Pie
+            doughnut
+            data={data}
+            dataKey='count'
+            dataLabel='label'
+          />
+        </div>
       </div>
     )
   }
