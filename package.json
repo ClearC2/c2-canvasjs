@@ -1,6 +1,6 @@
 {
   "name": "c2-canvasjs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Clear C2 Implementation of CanvasJS",
   "main": "dist/index.js",
   "scripts": {
