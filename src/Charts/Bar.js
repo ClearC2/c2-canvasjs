@@ -54,7 +54,7 @@ export default class Bar extends Component {
       let parsed = []
       let total = 0
       data.forEach((item, i) => {
-        let count = +item[dataKey] || 0
+        let count = dataKey === null ? 1 : (+item[dataKey] || 0)
         if (isNaN(count)) count = 0
         const label = item[dataLabel] || null
         if (label) {

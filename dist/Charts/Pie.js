@@ -69,7 +69,7 @@ var Pie = function (_Component) {
         var parsed = [];
         var total = 0;
         data.forEach(function (item, i) {
-          var count = +item[dataKey] || 0;
+          var count = dataKey === null ? 1 : +item[dataKey] || 0;
           if (isNaN(count)) count = 0;
           var label = item[dataLabel] || null;
           if (label) {
