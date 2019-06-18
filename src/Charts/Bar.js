@@ -53,16 +53,16 @@ export default class Bar extends Component {
       const datamap = {} // keeping track of order that the data was passed in - JRA 06/04/2019
       let parsed = []
       let total = 0
-      data.forEach((item, i) => {
+      data.forEach(item => {
         let count = dataKey === null ? 1 : (+item[dataKey] || 0)
         if (isNaN(count)) count = 0
-        const label = item[dataLabel] || null
-        if (label) {
+        let label = item[dataLabel]
+        if (typeof label !== 'undefined') {
           total = total + count
           if (datamap[label] >= 0) {
             parsed[datamap[label]].y = parsed[datamap[label]].y + count
           } else {
-            datamap[label] = i
+            datamap[label] = Object.keys(datamap).length
             parsed.push({label, y: count})
           }
         }

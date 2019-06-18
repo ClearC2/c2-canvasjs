@@ -39,7 +39,7 @@ export default class App extends Component {
           />
           <Bar
             data={data}
-            dataKey='count'
+            dataKey={null}
             dataLabel='label'
           />
           <Bar
