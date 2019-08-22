@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
@@ -48,7 +50,7 @@ var Bar = function (_Component) {
         data: [{
           click: _this.props.onClick,
           explodeOnClick: false,
-          type: _this.props.horizontal ? 'bar' : 'column',
+          type: _this.props.horizontal ? _this.props.stacked ? 'stackedBar' : 'bar' : _this.props.stacked ? 'stackedColumn' : 'column',
           toolTipContent: _this.props.toolTipContent,
           indexLabelPlacement: _this.props.indexLabelPlacement,
           indexLabel: _this.props.indexLabel,
@@ -63,35 +65,88 @@ var Bar = function (_Component) {
       } else {
         var _this$props = _this.props,
             dataKey = _this$props.dataKey,
-            dataLabel = _this$props.dataLabel;
+            dataLabel = _this$props.dataLabel,
+            stacked = _this$props.stacked,
+            dataStackKey = _this$props.dataStackKey;
 
-        var datamap = {}; // keeping track of order that the data was passed in - JRA 06/04/2019
-        var parsed = [];
-        var total = 0;
-        data.forEach(function (item) {
-          var count = dataKey === null ? 1 : +item[dataKey] || 0;
-          if (isNaN(count)) count = 0;
-          var label = item[dataLabel];
-          if (typeof label !== 'undefined') {
-            total = total + count;
-            if (datamap[label] >= 0) {
-              parsed[datamap[label]].y = parsed[datamap[label]].y + count;
+        if (stacked) {
+          var datamap = {};
+          var sections = [];
+          var knownBars = [];
+          data.forEach(function (item) {
+            var label = item[dataLabel];
+            knownBars.push(label);
+            if (typeof label !== 'undefined' && Array.isArray(item.data)) {
+              item.data.forEach(function (piece, i) {
+                var pieceLable = piece[dataStackKey];
+                if (pieceLable) {
+                  if (!datamap[pieceLable]) {
+                    var section = _extends({}, _this.state.options.data[0]);
+                    section.indexLabel = '';
+                    section.dataPoints = [];
+                    section.dataPoints[knownBars.indexOf(label)] = { label: label, y: +piece[dataKey] || 1 };
+                    section.toolTipContent = '<strong>' + piece[dataStackKey] + '</strong> {y}';
+                    datamap[pieceLable] = { i: i };
+                    sections.push(section);
+                  } else {
+                    var dataPoints = sections[datamap[pieceLable].i].dataPoints;
+                    if (!dataPoints.some(function (sec) {
+                      if (sec.label === label) {
+                        sec.y = sec.y + (piece[dataKey] || 1);
+                        return true;
+                      }
+                    })) {
+                      dataPoints[knownBars.indexOf(label)] = { label: label, y: +piece[dataKey] || 1 };
+                    }
+                  }
+                }
+              });
             } else {
-              datamap[label] = Object.keys(datamap).length;
-              parsed.push({ label: label, y: count });
+              console.error('You have specified a stacked bar chart but either a label or data array was not found for this item.', item); // eslint-disable-line
             }
-          }
-        });
-        parsed.map(function (item) {
-          item.percentage = (item.y / total * 100).toFixed(2);
-          return item;
-        });
-        _this.setState(function (s) {
-          var options = s.options;
+          });
+          knownBars.forEach(function (bar, i) {
+            sections.forEach(function (section) {
+              if (!section.dataPoints[i]) {
+                section.dataPoints[i] = { label: bar, y: 0 };
+              }
+            });
+          });
+          _this.setState(function (s) {
+            var options = s.options;
 
-          options.data[0].dataPoints = parsed;
-          return { options: options };
-        });
+            options.data = sections;
+            return { options: options };
+          });
+        } else {
+          var _datamap = {};
+          var parsed = [];
+          var total = 0;
+          data.forEach(function (item) {
+            var count = dataKey === null ? 1 : +item[dataKey] || 0;
+            if (isNaN(count)) count = 0;
+            var label = item[dataLabel];
+            if (typeof label !== 'undefined') {
+              total = total + count;
+              if (_datamap[label] >= 0) {
+                parsed[_datamap[label]].y = parsed[_datamap[label]].y + count;
+              } else {
+                _datamap[label] = Object.keys(_datamap).length;
+                parsed.push({ label: label, y: count });
+              }
+            }
+          });
+          parsed.map(function (item) {
+            item.percentage = (item.y / total * 100).toFixed(2);
+            return item;
+          });
+          _this.setState(function (s) {
+            var options = s.options;
+
+            options.data[0].dataPoints = parsed;
+            return { options: options };
+          });
+        }
       }
     }, _this.componentDidMount = function () {
       var data = _this.props.data;
@@ -127,9 +182,11 @@ Bar.propTypes = {
   data: _propTypes2.default.oneOfType([_propTypes2.default.array, _propTypes2.default.object]),
   dataKey: _propTypes2.default.string,
   dataLabel: _propTypes2.default.string,
+  dataStackKey: _propTypes2.default.string,
   style: _propTypes2.default.object,
   onClick: _propTypes2.default.func,
-  horizontal: _propTypes2.default.bool
+  horizontal: _propTypes2.default.bool,
+  stacked: _propTypes2.default.bool
 };
 Bar.defaultProps = {
   toolTipContent: '<b>{label}</b>: {y}',
@@ -137,7 +194,9 @@ Bar.defaultProps = {
   indexLabelPlacement: 'outside',
   data: [],
   dataKey: 'count',
+  dataStackKey: 'label',
   dataLabel: 'label',
-  horizontal: false
+  horizontal: false,
+  stacked: false
 };
 exports.default = Bar;

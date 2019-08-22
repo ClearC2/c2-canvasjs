@@ -24,11 +24,59 @@ export default class App extends Component {
         count: '578',
         label: 'Final Sales'
       }
+    ],
+    multi: [
+      {
+        owner: 'Chantaye Patton',
+        data: [
+          {
+            status: 'Initial Contact',
+            revenue: '3046000.00'
+          },
+          {
+            status: 'Proposal Submitted',
+            revenue: '391209.01'
+          },
+          {
+            status: 'Revision',
+            revenue: '25000.00'
+          },
+          {
+            status: 'Final Contract',
+            revenue: '10000.00'
+          }
+        ]
+      },
+      {
+        owner: 'Charlie Spaneas',
+        data: [
+          {
+            status: 'Initial Contact',
+            revenue: '27000.00'
+          },
+          {
+            status: 'Revision',
+            revenue: '14090.00'
+          },
+          {
+            status: 'Negotiations',
+            revenue: '75000.00'
+          },
+          {
+            status: 'Pricing Approval',
+            revenue: '874000.00'
+          },
+          {
+            status: 'Final Contract',
+            revenue: '15000.00'
+          }
+        ]
+      }
     ]
   }
 
   render () {
-    const {data} = this.state
+    const {data, multi} = this.state
     return (
       <div className='page-container'>
         <div className='page-row'>
@@ -42,12 +90,6 @@ export default class App extends Component {
             dataKey={null}
             dataLabel='label'
           />
-          <Bar
-            horizontal
-            data={data}
-            dataKey='count'
-            dataLabel='label'
-          />
           <Pie
             data={data}
             dataKey='count'
@@ -55,6 +97,29 @@ export default class App extends Component {
           />
           <Pie
             doughnut
+            data={data}
+            dataKey='count'
+            dataLabel='label'
+          />
+        </div>
+        <div className='page-row'>
+          <Bar
+            stacked
+            data={multi}
+            dataKey='revenue'
+            dataStackKey='status'
+            dataLabel='owner'
+          />
+          <Bar
+            horizontal
+            stacked
+            data={multi}
+            dataKey='revenue'
+            dataStackKey='status'
+            dataLabel='owner'
+          />
+          <Bar
+            horizontal
             data={data}
             dataKey='count'
             dataLabel='label'
