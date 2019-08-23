@@ -13,7 +13,9 @@ export default class Pie extends Component {
     dataLabel: PropTypes.string,
     style: PropTypes.object,
     onClick: PropTypes.func,
-    doughnut: PropTypes.bool
+    doughnut: PropTypes.bool,
+    axisX: PropTypes.object,
+    axisY: PropTypes.object
   }
 
   static defaultProps = {
@@ -23,12 +25,21 @@ export default class Pie extends Component {
     data: [],
     dataKey: 'count',
     dataLabel: 'label',
-    doughnut: false
+    doughnut: false,
+    axisX: {},
+    axisY: {}
   }
 
   state = {
     options: {
       animationEnabled: true,
+      axisX: {
+        interval: 1,
+        ...this.props.axisX
+      },
+      axisY: {
+        ...this.props.axisY
+      },
       data: [
         {
           click: this.props.onClick,

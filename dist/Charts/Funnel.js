@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
@@ -45,6 +47,10 @@ var Funnel = function (_Component) {
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Funnel.__proto__ || Object.getPrototypeOf(Funnel)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
       options: {
         animationEnabled: true,
+        axisX: _extends({
+          interval: 1
+        }, _this.props.axisX),
+        axisY: _extends({}, _this.props.axisY),
         data: [{
           click: _this.props.onClick,
           explodeOnClick: false,
@@ -146,7 +152,9 @@ Funnel.propTypes = {
   dataLabel: _propTypes2.default.string,
   percentType: _propTypes2.default.string,
   style: _propTypes2.default.object,
-  onClick: _propTypes2.default.func
+  onClick: _propTypes2.default.func,
+  axisX: _propTypes2.default.object,
+  axisY: _propTypes2.default.object
 };
 Funnel.defaultProps = {
   toolTipContent: '<b>{label}</b>: {y} <b>({percentage}%)</b>',
@@ -155,6 +163,8 @@ Funnel.defaultProps = {
   data: [],
   dataKey: 'count',
   dataLabel: 'label',
-  percentType: 'exclusive'
+  percentType: 'exclusive',
+  axisX: {},
+  axisY: {}
 };
 exports.default = Funnel;

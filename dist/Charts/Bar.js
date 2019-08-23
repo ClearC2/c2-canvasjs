@@ -47,6 +47,10 @@ var Bar = function (_Component) {
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Bar.__proto__ || Object.getPrototypeOf(Bar)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
       options: {
         animationEnabled: true,
+        axisX: _extends({
+          interval: 1
+        }, _this.props.axisX),
+        axisY: _extends({}, _this.props.axisY),
         data: [{
           click: _this.props.onClick,
           explodeOnClick: false,
@@ -186,7 +190,9 @@ Bar.propTypes = {
   style: _propTypes2.default.object,
   onClick: _propTypes2.default.func,
   horizontal: _propTypes2.default.bool,
-  stacked: _propTypes2.default.bool
+  stacked: _propTypes2.default.bool,
+  axisX: _propTypes2.default.object,
+  axisY: _propTypes2.default.object
 };
 Bar.defaultProps = {
   toolTipContent: '<b>{label}</b>: {y}',
@@ -197,6 +203,8 @@ Bar.defaultProps = {
   dataStackKey: 'label',
   dataLabel: 'label',
   horizontal: false,
-  stacked: false
+  stacked: false,
+  axisX: {},
+  axisY: {}
 };
 exports.default = Bar;

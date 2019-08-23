@@ -13,7 +13,9 @@ export default class Funnel extends Component {
     dataLabel: PropTypes.string,
     percentType: PropTypes.string,
     style: PropTypes.object,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    axisX: PropTypes.object,
+    axisY: PropTypes.object
   }
 
   static defaultProps = {
@@ -23,12 +25,21 @@ export default class Funnel extends Component {
     data: [],
     dataKey: 'count',
     dataLabel: 'label',
-    percentType: 'exclusive'
+    percentType: 'exclusive',
+    axisX: {},
+    axisY: {}
   }
 
   state = {
     options: {
       animationEnabled: true,
+      axisX: {
+        interval: 1,
+        ...this.props.axisX
+      },
+      axisY: {
+        ...this.props.axisY
+      },
       data: [
         {
           click: this.props.onClick,

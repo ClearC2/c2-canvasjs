@@ -15,7 +15,9 @@ export default class Bar extends Component {
     style: PropTypes.object,
     onClick: PropTypes.func,
     horizontal: PropTypes.bool,
-    stacked: PropTypes.bool
+    stacked: PropTypes.bool,
+    axisX: PropTypes.object,
+    axisY: PropTypes.object
   }
 
   static defaultProps = {
@@ -27,12 +29,21 @@ export default class Bar extends Component {
     dataStackKey: 'label',
     dataLabel: 'label',
     horizontal: false,
-    stacked: false
+    stacked: false,
+    axisX: {},
+    axisY: {}
   }
 
   state = {
     options: {
       animationEnabled: true,
+      axisX: {
+        interval: 1,
+        ...this.props.axisX
+      },
+      axisY: {
+        ...this.props.axisY
+      },
       data: [
         {
           click: this.props.onClick,
