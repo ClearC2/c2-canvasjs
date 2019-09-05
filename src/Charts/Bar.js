@@ -1,7 +1,8 @@
-import React, {Component} from 'react'
+import React, {Component, Fragment} from 'react'
 import PropTypes from 'prop-types'
 import Chart from '../index'
 import {isEqual} from 'lodash'
+import ReactTooltip from 'react-tooltip'
 
 export default class Bar extends Component {
   static propTypes = {
@@ -10,7 +11,7 @@ export default class Bar extends Component {
     indexLabelPlacement: PropTypes.string,
     data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     dataKey: PropTypes.string,
-    dataLabel: PropTypes.string,
+    dataLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
     dataStackKey: PropTypes.string,
     style: PropTypes.object,
     onClick: PropTypes.func,
@@ -35,6 +36,7 @@ export default class Bar extends Component {
   }
 
   state = {
+    dataSubFilter: [],
     options: {
       animationEnabled: true,
       axisX: {
@@ -60,13 +62,54 @@ export default class Bar extends Component {
     }
   }
 
+  handleSubFilterRemove = i => {
+    this.setState(s => {
+      const dataSubFilter = [...s.dataSubFilter].slice(0, i)
+      return {dataSubFilter}
+    })
+  }
+
+  handleClick = e => {
+    const {onClick = () => null, dataLabel} = this.props
+    if (Array.isArray(dataLabel)) {
+      const {label} = e.dataPoint
+      this.setState(s => {
+        const dataSubFilter = [...s.dataSubFilter]
+        if (
+          dataSubFilter[dataSubFilter.length - 1] !== label &&
+          dataSubFilter.length !== (dataLabel.length - 1)
+        ) {
+          dataSubFilter.push(label)
+        }
+        return {dataSubFilter}
+      })
+    }
+    onClick(e)
+  }
+
   parseData = data => {
     data = typeof data.toList === 'function' ? data.toList() : data
     data = typeof data.toJS === 'function' ? data.toJS() : data
     if (data && !Array.isArray(data)) {
       console.error('The data provided to this chart is malformed. The data should be an array of data objects, but instead found', data) // eslint-disable-line
     } else {
-      const {dataKey, dataLabel, stacked, dataStackKey} = this.props
+      const {dataKey, stacked, dataStackKey} = this.props
+      const {dataSubFilter} = this.state
+      let {dataLabel} = this.props
+      if (Array.isArray(dataLabel) && dataSubFilter.length) {
+        data = data.filter(item => {
+          let match = true
+          dataSubFilter.forEach((subVal, i) => {
+            if (item[dataLabel[i]] !== subVal) {
+              match = false
+            }
+          })
+          return match
+        })
+      }
+      if (Array.isArray(dataLabel)) {
+        dataLabel = dataLabel[dataSubFilter.length]
+      }
       if (stacked) {
         const datamap = {}
         const sections = []
@@ -82,6 +125,7 @@ export default class Bar extends Component {
                   const section = {...this.state.options.data[0]}
                   section.indexLabel = ''
                   section.dataPoints = []
+                  section.click = this.handleClick
                   section.dataPoints[knownBars.indexOf(label)] = {label, y: +piece[dataKey] || 1}
                   section.toolTipContent = `<strong>${piece[dataStackKey]}</strong> {y}`
                   datamap[pieceLable] = {i}
@@ -140,6 +184,7 @@ export default class Bar extends Component {
         this.setState(s => {
           const {options} = s
           options.data[0].dataPoints = parsed
+          options.data[0].click = this.handleClick
           return {options}
         })
       }
@@ -151,15 +196,49 @@ export default class Bar extends Component {
     this.parseData(data)
   }
 
-  componentDidUpdate (p) {
-    if (!isEqual(p.data, this.props.data)) {
+  componentDidUpdate (p, s) {
+    if (
+      !isEqual(p.data, this.props.data) ||
+      this.state.dataSubFilter.length !== s.dataSubFilter.length
+    ) {
       this.parseData(this.props.data)
     }
   }
 
   render () {
-    const {options} = this.state
+    const {options, dataSubFilter} = this.state
     const {style} = this.props
-    return <Chart style={style} options={options} />
+    return (
+      <Chart style={style} options={options}>
+        {dataSubFilter.length > 0 && (
+          <div
+            style={{
+              width: '100%',
+              position: 'absolute',
+              left: 45,
+              top: -10
+            }}
+          >
+            {dataSubFilter.map((value, i) => {
+              return (
+                <Fragment key={i}>
+                  <ReactTooltip />
+                  <strong
+                    data-tip='Click to remove filter.'
+                    style={{
+                      cursor: 'pointer',
+                      userSelect: 'none'
+                    }}
+                    onClick={() => this.handleSubFilterRemove(i)}
+                  >
+                    {i > 0 && ' > '}{value}
+                  </strong>
+                </Fragment>
+              )
+            })}
+          </div>
+        )}
+      </Chart>
+    )
   }
 }

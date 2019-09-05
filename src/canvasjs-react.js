@@ -11,7 +11,8 @@ export default class CanvasJSChart extends Component {
 
   static propTypes = {
     options: PropTypes.object,
-    style: PropTypes.object
+    style: PropTypes.object,
+    children: PropTypes.oneOfType([PropTypes.bool, PropTypes.object, PropTypes.array])
   }
 
   static defaultProps = {
@@ -56,6 +57,10 @@ export default class CanvasJSChart extends Component {
   }
 
   render () {
-    return <div id={this.chartContainerId} style={this.props.style} />
+    return (
+      <div id={this.chartContainerId} style={this.props.style}>
+        {this.props.children}
+      </div>
+    )
   }
 }

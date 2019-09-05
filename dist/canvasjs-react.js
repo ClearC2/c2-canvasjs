@@ -79,7 +79,11 @@ var CanvasJSChart = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      return _react2.default.createElement('div', { id: this.chartContainerId, style: this.props.style });
+      return _react2.default.createElement(
+        'div',
+        { id: this.chartContainerId, style: this.props.style },
+        this.props.children
+      );
     }
   }]);
 
@@ -89,7 +93,8 @@ var CanvasJSChart = function (_Component) {
 CanvasJSChart._cjsContainerId = 0;
 CanvasJSChart.propTypes = {
   options: _propTypes2.default.object,
-  style: _propTypes2.default.object
+  style: _propTypes2.default.object,
+  children: _propTypes2.default.oneOfType([_propTypes2.default.bool, _propTypes2.default.object, _propTypes2.default.array])
 };
 CanvasJSChart.defaultProps = {
   options: {},

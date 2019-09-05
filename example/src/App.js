@@ -6,23 +6,63 @@ export default class App extends Component {
     data: [
       {
         count: '1400',
-        label: 'Prospects'
+        label: 'Prospects',
+        sublabel: 'Jake',
+        subsublabel: 'Active'
       },
       {
         count: '1212',
-        label: 'Qualified Prospects'
+        label: 'Qualified Prospects',
+        sublabel: 'Mickey',
+        subsublabel: 'Active'
       },
       {
         count: '1080',
-        label: 'Proposals'
+        label: 'Proposals',
+        sublabel: 'Jake',
+        subsublabel: 'Active'
+      },
+      {
+        count: '900',
+        label: 'Proposals',
+        sublabel: 'Mickey',
+        subsublabel: 'Active'
       },
       {
         count: '665',
-        label: 'Negotiation'
+        label: 'Negotiation',
+        sublabel: 'Jake',
+        subsublabel: 'Active'
+      },
+      {
+        count: '5567',
+        label: 'Proposals',
+        sublabel: 'Jake',
+        subsublabel: 'Closed'
+      },
+      {
+        count: '600',
+        label: 'Negotiation',
+        sublabel: 'Mickey',
+        subsublabel: 'Active'
       },
       {
         count: '578',
-        label: 'Final Sales'
+        label: 'Final Sales',
+        sublabel: 'Jake',
+        subsublabel: 'Active'
+      },
+      {
+        count: '500',
+        label: 'Final Sales',
+        sublabel: 'Mickey',
+        subsublabel: 'Active'
+      },
+      {
+        count: '500',
+        label: 'Final Sales',
+        sublabel: 'Jacy',
+        subsublabel: 'Active'
       }
     ],
     multi: [
@@ -88,7 +128,7 @@ export default class App extends Component {
           <Bar
             data={data}
             dataKey={null}
-            dataLabel='label'
+            dataLabel={['label', 'sublabel', 'subsublabel']}
           />
           <Pie
             data={data}
@@ -122,7 +162,7 @@ export default class App extends Component {
             horizontal
             data={data}
             dataKey='count'
-            dataLabel='label'
+            dataLabel={['label', 'sublabel', 'subsublabel']}
           />
         </div>
       </div>

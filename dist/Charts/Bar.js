@@ -22,7 +22,13 @@ var _index2 = _interopRequireDefault(_index);
 
 var _lodash = require('lodash');
 
+var _reactTooltip = require('react-tooltip');
+
+var _reactTooltip2 = _interopRequireDefault(_reactTooltip);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -45,6 +51,7 @@ var Bar = function (_Component) {
     }
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Bar.__proto__ || Object.getPrototypeOf(Bar)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+      dataSubFilter: [],
       options: {
         animationEnabled: true,
         axisX: _extends({
@@ -61,18 +68,58 @@ var Bar = function (_Component) {
           dataPoints: []
         }]
       }
+    }, _this.handleSubFilterRemove = function (i) {
+      _this.setState(function (s) {
+        var dataSubFilter = [].concat(_toConsumableArray(s.dataSubFilter)).slice(0, i);
+        return { dataSubFilter: dataSubFilter };
+      });
+    }, _this.handleClick = function (e) {
+      var _this$props = _this.props,
+          _this$props$onClick = _this$props.onClick,
+          onClick = _this$props$onClick === undefined ? function () {
+        return null;
+      } : _this$props$onClick,
+          dataLabel = _this$props.dataLabel;
+
+      if (Array.isArray(dataLabel)) {
+        var label = e.dataPoint.label;
+
+        _this.setState(function (s) {
+          var dataSubFilter = [].concat(_toConsumableArray(s.dataSubFilter));
+          if (dataSubFilter[dataSubFilter.length - 1] !== label && dataSubFilter.length !== dataLabel.length - 1) {
+            dataSubFilter.push(label);
+          }
+          return { dataSubFilter: dataSubFilter };
+        });
+      }
+      onClick(e);
     }, _this.parseData = function (data) {
       data = typeof data.toList === 'function' ? data.toList() : data;
       data = typeof data.toJS === 'function' ? data.toJS() : data;
       if (data && !Array.isArray(data)) {
         console.error('The data provided to this chart is malformed. The data should be an array of data objects, but instead found', data); // eslint-disable-line
       } else {
-        var _this$props = _this.props,
-            dataKey = _this$props.dataKey,
-            dataLabel = _this$props.dataLabel,
-            stacked = _this$props.stacked,
-            dataStackKey = _this$props.dataStackKey;
+        var _this$props2 = _this.props,
+            dataKey = _this$props2.dataKey,
+            stacked = _this$props2.stacked,
+            dataStackKey = _this$props2.dataStackKey;
+        var dataSubFilter = _this.state.dataSubFilter;
+        var dataLabel = _this.props.dataLabel;
 
+        if (Array.isArray(dataLabel) && dataSubFilter.length) {
+          data = data.filter(function (item) {
+            var match = true;
+            dataSubFilter.forEach(function (subVal, i) {
+              if (item[dataLabel[i]] !== subVal) {
+                match = false;
+              }
+            });
+            return match;
+          });
+        }
+        if (Array.isArray(dataLabel)) {
+          dataLabel = dataLabel[dataSubFilter.length];
+        }
         if (stacked) {
           var datamap = {};
           var sections = [];
@@ -88,6 +135,7 @@ var Bar = function (_Component) {
                     var section = _extends({}, _this.state.options.data[0]);
                     section.indexLabel = '';
                     section.dataPoints = [];
+                    section.click = _this.handleClick;
                     section.dataPoints[knownBars.indexOf(label)] = { label: label, y: +piece[dataKey] || 1 };
                     section.toolTipContent = '<strong>' + piece[dataStackKey] + '</strong> {y}';
                     datamap[pieceLable] = { i: i };
@@ -148,6 +196,7 @@ var Bar = function (_Component) {
             var options = s.options;
 
             options.data[0].dataPoints = parsed;
+            options.data[0].click = _this.handleClick;
             return { options: options };
           });
         }
@@ -161,18 +210,58 @@ var Bar = function (_Component) {
 
   _createClass(Bar, [{
     key: 'componentDidUpdate',
-    value: function componentDidUpdate(p) {
-      if (!(0, _lodash.isEqual)(p.data, this.props.data)) {
+    value: function componentDidUpdate(p, s) {
+      if (!(0, _lodash.isEqual)(p.data, this.props.data) || this.state.dataSubFilter.length !== s.dataSubFilter.length) {
         this.parseData(this.props.data);
       }
     }
   }, {
     key: 'render',
     value: function render() {
-      var options = this.state.options;
+      var _this2 = this;
+
+      var _state = this.state,
+          options = _state.options,
+          dataSubFilter = _state.dataSubFilter;
       var style = this.props.style;
 
-      return _react2.default.createElement(_index2.default, { style: style, options: options });
+      return _react2.default.createElement(
+        _index2.default,
+        { style: style, options: options },
+        dataSubFilter.length > 0 && _react2.default.createElement(
+          'div',
+          {
+            style: {
+              width: '100%',
+              position: 'absolute',
+              left: 45,
+              top: -10
+            }
+          },
+          dataSubFilter.map(function (value, i) {
+            return _react2.default.createElement(
+              _react.Fragment,
+              { key: i },
+              _react2.default.createElement(_reactTooltip2.default, null),
+              _react2.default.createElement(
+                'strong',
+                {
+                  'data-tip': 'Click to remove filter.',
+                  style: {
+                    cursor: 'pointer',
+                    userSelect: 'none'
+                  },
+                  onClick: function onClick() {
+                    return _this2.handleSubFilterRemove(i);
+                  }
+                },
+                i > 0 && ' > ',
+                value
+              )
+            );
+          })
+        )
+      );
     }
   }]);
 
@@ -185,7 +274,7 @@ Bar.propTypes = {
   indexLabelPlacement: _propTypes2.default.string,
   data: _propTypes2.default.oneOfType([_propTypes2.default.array, _propTypes2.default.object]),
   dataKey: _propTypes2.default.string,
-  dataLabel: _propTypes2.default.string,
+  dataLabel: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.array]),
   dataStackKey: _propTypes2.default.string,
   style: _propTypes2.default.object,
   onClick: _propTypes2.default.func,
