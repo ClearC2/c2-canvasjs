@@ -73,8 +73,10 @@ export default class Bar extends Component {
     const {onClick = () => null, dataLabel} = this.props
     if (Array.isArray(dataLabel)) {
       const {label} = e.dataPoint
+      let terminal = false
       this.setState(s => {
         const dataSubFilter = [...s.dataSubFilter]
+        terminal = this.state.dataSubFilter.length === this.props.dataLabel.length - 1
         if (
           dataSubFilter[dataSubFilter.length - 1] !== label &&
           dataSubFilter.length !== (dataLabel.length - 1)
@@ -82,9 +84,12 @@ export default class Bar extends Component {
           dataSubFilter.push(label)
         }
         return {dataSubFilter}
+      }, () => {
+        onClick(e, this.state.dataSubFilter, terminal)
       })
+    } else {
+      onClick(e, [e.dataPoint.label], true)
     }
-    onClick(e)
   }
 
   parseData = data => {
@@ -215,8 +220,8 @@ export default class Bar extends Component {
             style={{
               width: '100%',
               position: 'absolute',
-              left: 45,
-              top: -10
+              left: 90,
+              top: -20
             }}
           >
             {dataSubFilter.map((value, i) => {

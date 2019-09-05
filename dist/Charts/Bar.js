@@ -84,15 +84,20 @@ var Bar = function (_Component) {
       if (Array.isArray(dataLabel)) {
         var label = e.dataPoint.label;
 
+        var terminal = false;
         _this.setState(function (s) {
           var dataSubFilter = [].concat(_toConsumableArray(s.dataSubFilter));
+          terminal = _this.state.dataSubFilter.length === _this.props.dataLabel.length - 1;
           if (dataSubFilter[dataSubFilter.length - 1] !== label && dataSubFilter.length !== dataLabel.length - 1) {
             dataSubFilter.push(label);
           }
           return { dataSubFilter: dataSubFilter };
+        }, function () {
+          onClick(e, _this.state.dataSubFilter, terminal);
         });
+      } else {
+        onClick(e, [e.dataPoint.label], true);
       }
-      onClick(e);
     }, _this.parseData = function (data) {
       data = typeof data.toList === 'function' ? data.toList() : data;
       data = typeof data.toJS === 'function' ? data.toJS() : data;
@@ -234,8 +239,8 @@ var Bar = function (_Component) {
             style: {
               width: '100%',
               position: 'absolute',
-              left: 45,
-              top: -10
+              left: 90,
+              top: -20
             }
           },
           dataSubFilter.map(function (value, i) {

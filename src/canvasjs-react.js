@@ -58,7 +58,7 @@ export default class CanvasJSChart extends Component {
 
   render () {
     return (
-      <div id={this.chartContainerId} style={this.props.style}>
+      <div id={this.chartContainerId} style={{position: 'relative', ...this.props.style}}>
         {this.props.children}
       </div>
     )
