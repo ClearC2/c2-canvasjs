@@ -236,7 +236,7 @@ export default class Bar extends Component {
                     }}
                     onClick={() => this.handleSubFilterRemove(i)}
                   >
-                    {i > 0 && ' > '}{value}
+                    {i > 0 && ' > '}{value === '' ? 'Blank' : value}
                   </strong>
                 </Fragment>
               )
