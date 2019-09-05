@@ -261,7 +261,7 @@ var Bar = function (_Component) {
                   }
                 },
                 i > 0 && ' > ',
-                value
+                value === '' ? 'Blank' : value
               )
             );
           })
