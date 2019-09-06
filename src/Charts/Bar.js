@@ -12,6 +12,7 @@ export default class Bar extends Component {
     data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     dataKey: PropTypes.string,
     dataLabel: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+    dataLabelMap: PropTypes.array,
     dataStackKey: PropTypes.string,
     style: PropTypes.object,
     onClick: PropTypes.func,
@@ -85,10 +86,56 @@ export default class Bar extends Component {
         }
         return {dataSubFilter}
       }, () => {
-        onClick(e, this.state.dataSubFilter, terminal)
+        const {dataSubFilter} = this.state
+        const filters = {}
+        const {dataLabelMap} = this.props
+        let items = []
+        if (Array.isArray(dataLabelMap)) {
+          dataSubFilter.forEach((val, i) => {
+            const key = dataLabelMap[i]
+            if (key) {
+              let {data} = this.props
+              if (data.toList) data = data.toList()
+              if (data.toJS) data = data.toJS()
+              if (!Array.isArray(data)) {
+                console.error('You have specified a data label map but the data is not an array of objects, cannot parse values.') // eslint-disable-line
+              } else {
+                items = data
+                let value = null
+                data.some(item => {
+                  if (item[dataLabel[i]] === val) {
+                    value = item[key]
+                    return true
+                  }
+                })
+                if (typeof value === 'undefined') value = val
+                filters[key] = value
+              }
+            } else {
+              filters[dataLabel[i]] = val
+            }
+          })
+        }
+        if (terminal) {
+          const lastKey = dataLabel[dataLabel.length - 1]
+          const lastKeyMap = dataLabelMap[dataLabelMap.length - 1]
+          if (dataLabelMap.length === dataLabel.length) {
+            let value = null
+            items.some(item => {
+              if (item[lastKey] === label) {
+                value = item[lastKeyMap]
+                return true
+              }
+            })
+            filters[lastKeyMap] = value
+          } else {
+            filters[lastKey] = label
+          }
+        }
+        onClick(e, filters, terminal)
       })
     } else {
-      onClick(e, [e.dataPoint.label], true)
+      onClick(e, {[dataLabel]: e.dataPoint.label}, true)
     }
   }
 

@@ -28,6 +28,8 @@ var _reactTooltip2 = _interopRequireDefault(_reactTooltip);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -93,10 +95,59 @@ var Bar = function (_Component) {
           }
           return { dataSubFilter: dataSubFilter };
         }, function () {
-          onClick(e, _this.state.dataSubFilter, terminal);
+          var dataSubFilter = _this.state.dataSubFilter;
+
+          var filters = {};
+          var dataLabelMap = _this.props.dataLabelMap;
+
+          var items = [];
+          if (Array.isArray(dataLabelMap)) {
+            dataSubFilter.forEach(function (val, i) {
+              var key = dataLabelMap[i];
+              if (key) {
+                var data = _this.props.data;
+
+                if (data.toList) data = data.toList();
+                if (data.toJS) data = data.toJS();
+                if (!Array.isArray(data)) {
+                  console.error('You have specified a data label map but the data is not an array of objects, cannot parse values.'); // eslint-disable-line
+                } else {
+                  items = data;
+                  var value = null;
+                  data.some(function (item) {
+                    if (item[dataLabel[i]] === val) {
+                      value = item[key];
+                      return true;
+                    }
+                  });
+                  if (typeof value === 'undefined') value = val;
+                  filters[key] = value;
+                }
+              } else {
+                filters[dataLabel[i]] = val;
+              }
+            });
+          }
+          if (terminal) {
+            var lastKey = dataLabel[dataLabel.length - 1];
+            var lastKeyMap = dataLabelMap[dataLabelMap.length - 1];
+            if (dataLabelMap.length === dataLabel.length) {
+              var value = null;
+              items.some(function (item) {
+                if (item[lastKey] === label) {
+                  value = item[lastKeyMap];
+                  return true;
+                }
+              });
+              filters[lastKeyMap] = value;
+            } else {
+              filters[lastKey] = label;
+            }
+          }
+          onClick(e, filters, terminal);
         });
       } else {
-        onClick(e, [e.dataPoint.label], true);
+        onClick(e, _defineProperty({}, dataLabel, e.dataPoint.label), true);
       }
     }, _this.parseData = function (data) {
       data = typeof data.toList === 'function' ? data.toList() : data;
@@ -280,6 +331,7 @@ Bar.propTypes = {
   data: _propTypes2.default.oneOfType([_propTypes2.default.array, _propTypes2.default.object]),
   dataKey: _propTypes2.default.string,
   dataLabel: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.array]),
+  dataLabelMap: _propTypes2.default.array,
   dataStackKey: _propTypes2.default.string,
   style: _propTypes2.default.object,
   onClick: _propTypes2.default.func,
