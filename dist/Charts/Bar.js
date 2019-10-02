@@ -81,7 +81,9 @@ var Bar = function (_Component) {
           onClick = _this$props$onClick === undefined ? function () {
         return null;
       } : _this$props$onClick,
-          dataLabel = _this$props.dataLabel;
+          dataLabel = _this$props.dataLabel,
+          stacked = _this$props.stacked,
+          dataStackKey = _this$props.dataStackKey;
 
       if (Array.isArray(dataLabel)) {
         var label = e.dataPoint.label;
@@ -130,8 +132,8 @@ var Bar = function (_Component) {
           }
           if (terminal) {
             var lastKey = dataLabel[dataLabel.length - 1];
-            var lastKeyMap = dataLabelMap[dataLabelMap.length - 1];
-            if (dataLabelMap.length === dataLabel.length) {
+            var lastKeyMap = dataLabelMap ? dataLabelMap[dataLabelMap.length - 1] : lastKey;
+            if (dataLabelMap && dataLabelMap.length === dataLabel.length) {
               var value = null;
               items.some(function (item) {
                 if (item[lastKey] === label) {
@@ -147,7 +149,11 @@ var Bar = function (_Component) {
           onClick(e, filters, terminal);
         });
       } else {
-        onClick(e, _defineProperty({}, dataLabel, e.dataPoint.label), true);
+        var filters = _defineProperty({}, dataLabel, e.dataPoint.label);
+        if (stacked) {
+          filters[dataStackKey] = e.dataSeries.label;
+        }
+        onClick(e, filters, true);
       }
     }, _this.parseData = function (data) {
       data = typeof data.toList === 'function' ? data.toList() : data;
@@ -194,6 +200,7 @@ var Bar = function (_Component) {
                     section.click = _this.handleClick;
                     section.dataPoints[knownBars.indexOf(label)] = { label: label, y: +piece[dataKey] || 1 };
                     section.toolTipContent = '<strong>' + piece[dataStackKey] + '</strong> {y}';
+                    section.label = piece[dataStackKey];
                     datamap[pieceLable] = { i: i };
                     sections.push(section);
                   } else {

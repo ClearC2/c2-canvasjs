@@ -71,7 +71,7 @@ export default class Bar extends Component {
   }
 
   handleClick = e => {
-    const {onClick = () => null, dataLabel} = this.props
+    const {onClick = () => null, dataLabel, stacked, dataStackKey} = this.props
     if (Array.isArray(dataLabel)) {
       const {label} = e.dataPoint
       let terminal = false
@@ -118,8 +118,8 @@ export default class Bar extends Component {
         }
         if (terminal) {
           const lastKey = dataLabel[dataLabel.length - 1]
-          const lastKeyMap = dataLabelMap[dataLabelMap.length - 1]
-          if (dataLabelMap.length === dataLabel.length) {
+          const lastKeyMap = dataLabelMap ? dataLabelMap[dataLabelMap.length - 1] : lastKey
+          if (dataLabelMap && dataLabelMap.length === dataLabel.length) {
             let value = null
             items.some(item => {
               if (item[lastKey] === label) {
@@ -135,7 +135,11 @@ export default class Bar extends Component {
         onClick(e, filters, terminal)
       })
     } else {
-      onClick(e, {[dataLabel]: e.dataPoint.label}, true)
+      const filters = {[dataLabel]: e.dataPoint.label}
+      if (stacked) {
+        filters[dataStackKey] = e.dataSeries.label
+      }
+      onClick(e, filters, true)
     }
   }
 
@@ -180,6 +184,7 @@ export default class Bar extends Component {
                   section.click = this.handleClick
                   section.dataPoints[knownBars.indexOf(label)] = {label, y: +piece[dataKey] || 1}
                   section.toolTipContent = `<strong>${piece[dataStackKey]}</strong> {y}`
+                  section.label = piece[dataStackKey]
                   datamap[pieceLable] = {i}
                   sections.push(section)
                 } else {
