@@ -15,13 +15,16 @@ export default class Pie extends Component {
     onClick: PropTypes.func,
     doughnut: PropTypes.bool,
     axisX: PropTypes.object,
-    axisY: PropTypes.object
+    axisY: PropTypes.object,
+    indexLabelWrap: PropTypes.bool,
+    labelFormatter: PropTypes.func
   }
 
   static defaultProps = {
     toolTipContent: '<b>{label}</b>: {y} <b>({percentage}%)</b>',
     indexLabel: '{label} {y} ({percentage}%)',
     indexLabelPlacement: 'outside',
+    indexLabelWrap: false,
     data: [],
     dataKey: 'count',
     dataLabel: 'label',
@@ -48,6 +51,8 @@ export default class Pie extends Component {
           toolTipContent: this.props.toolTipContent,
           indexLabelPlacement: this.props.indexLabelPlacement,
           indexLabel: this.props.indexLabel,
+          indexLabelWrap: this.props.indexLabelWrap,
+          indexLabelFormatter: this.props.labelFormatter,
           dataPoints: []
         }
       ]

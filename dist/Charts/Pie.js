@@ -58,6 +58,8 @@ var Pie = function (_Component) {
           toolTipContent: _this.props.toolTipContent,
           indexLabelPlacement: _this.props.indexLabelPlacement,
           indexLabel: _this.props.indexLabel,
+          indexLabelWrap: _this.props.indexLabelWrap,
+          indexLabelFormatter: _this.props.labelFormatter,
           dataPoints: []
         }]
       }
@@ -137,12 +139,15 @@ Pie.propTypes = {
   onClick: _propTypes2.default.func,
   doughnut: _propTypes2.default.bool,
   axisX: _propTypes2.default.object,
-  axisY: _propTypes2.default.object
+  axisY: _propTypes2.default.object,
+  indexLabelWrap: _propTypes2.default.bool,
+  labelFormatter: _propTypes2.default.func
 };
 Pie.defaultProps = {
   toolTipContent: '<b>{label}</b>: {y} <b>({percentage}%)</b>',
   indexLabel: '{label} {y} ({percentage}%)',
   indexLabelPlacement: 'outside',
+  indexLabelWrap: false,
   data: [],
   dataKey: 'count',
   dataLabel: 'label',

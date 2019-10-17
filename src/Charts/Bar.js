@@ -19,13 +19,16 @@ export default class Bar extends Component {
     horizontal: PropTypes.bool,
     stacked: PropTypes.bool,
     axisX: PropTypes.object,
-    axisY: PropTypes.object
+    axisY: PropTypes.object,
+    indexLabelWrap: PropTypes.bool,
+    labelFormatter: PropTypes.func
   }
 
   static defaultProps = {
     toolTipContent: '<b>{label}</b>: {y}',
     indexLabel: '{y}',
     indexLabelPlacement: 'outside',
+    indexLabelWrap: false,
     data: [],
     dataKey: 'count',
     dataStackKey: 'label',
@@ -57,6 +60,8 @@ export default class Bar extends Component {
           toolTipContent: this.props.toolTipContent,
           indexLabelPlacement: this.props.indexLabelPlacement,
           indexLabel: this.props.indexLabel,
+          indexLabelWrap: this.props.indexLabelWrap,
+          indexLabelFormatter: this.props.labelFormatter,
           dataPoints: []
         }
       ]

@@ -67,6 +67,8 @@ var Bar = function (_Component) {
           toolTipContent: _this.props.toolTipContent,
           indexLabelPlacement: _this.props.indexLabelPlacement,
           indexLabel: _this.props.indexLabel,
+          indexLabelWrap: _this.props.indexLabelWrap,
+          indexLabelFormatter: _this.props.labelFormatter,
           dataPoints: []
         }]
       }
@@ -345,12 +347,15 @@ Bar.propTypes = {
   horizontal: _propTypes2.default.bool,
   stacked: _propTypes2.default.bool,
   axisX: _propTypes2.default.object,
-  axisY: _propTypes2.default.object
+  axisY: _propTypes2.default.object,
+  indexLabelWrap: _propTypes2.default.bool,
+  labelFormatter: _propTypes2.default.func
 };
 Bar.defaultProps = {
   toolTipContent: '<b>{label}</b>: {y}',
   indexLabel: '{y}',
   indexLabelPlacement: 'outside',
+  indexLabelWrap: false,
   data: [],
   dataKey: 'count',
   dataStackKey: 'label',
