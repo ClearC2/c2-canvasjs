@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Funnel, Bar, Pie} from 'c2-canvasjs'
+import {Funnel, Bar, Pie, PreFormatted} from 'c2-canvasjs'
 
 export default class App extends Component {
   state = {
@@ -112,11 +112,138 @@ export default class App extends Component {
           }
         ]
       }
-    ]
+    ],
+    combo: {
+      title: {
+        text: 'Formletter Performance'
+      },
+      axisY: {
+        title: 'Sends and Opt Outs',
+        lineColor: '#369EAD',
+        titleFontColor: '#369EAD',
+        labelFontColor: '#369EAD'
+      },
+      axisY2: {
+        title: 'Open and Click %',
+        lineColor: '#C24642',
+        titleFontColor: '#C24642',
+        labelFontColor: '#C24642'
+      },
+      data: [
+        {
+          type: 'column',
+          name: 'Sent',
+          dataPoints: [
+            {
+              label: 'Form Letter Again-',
+              y: 83
+            },
+            {
+              label: 'Ticket Notify Formletter',
+              y: 29
+            },
+            {
+              label: 'Aiphone New Product Release',
+              y: 2
+            },
+            {
+              label: 'Testing Order Formletter',
+              y: 2
+            },
+            {
+              label: 'Quote Email',
+              y: 29
+            }
+          ]
+        },
+        {
+          type: 'column',
+          name: 'Opt Outs',
+          dataPoints: [
+            {
+              label: 'Form Letter Again-',
+              y: 2
+            },
+            {
+              label: 'Ticket Notify Formletter',
+              y: 0
+            },
+            {
+              label: 'Aiphone New Product Release',
+              y: 0
+            },
+            {
+              label: 'Testing Order Formletter',
+              y: 0
+            },
+            {
+              label: 'Quote Email',
+              y: 0
+            }
+          ]
+        },
+        {
+          type: 'spline',
+          yValueFormatString: "#,##0.0\\'%\\'",
+          name: 'Open %',
+          axisYType: 'secondary',
+          dataPoints: [
+            {
+              label: 'Form Letter Again-',
+              y: 92
+            },
+            {
+              label: 'Ticket Notify Formletter',
+              y: 28
+            },
+            {
+              label: 'Aiphone New Product Release',
+              y: 50
+            },
+            {
+              label: 'Testing Order Formletter',
+              y: 0
+            },
+            {
+              label: 'Quote Email',
+              y: 86
+            }
+          ]
+        },
+        {
+          type: 'spline',
+          yValueFormatString: "#,##0.0\\'%\\'",
+          name: 'Click %',
+          axisYType: 'secondary',
+          dataPoints: [
+            {
+              label: 'Form Letter Again-',
+              y: 14
+            },
+            {
+              label: 'Ticket Notify Formletter',
+              y: 3
+            },
+            {
+              label: 'Aiphone New Product Release',
+              y: 0
+            },
+            {
+              label: 'Testing Order Formletter',
+              y: 0
+            },
+            {
+              label: 'Quote Email',
+              y: 0
+            }
+          ]
+        }
+      ]
+    }
   }
 
   render () {
-    const {data, multi} = this.state
+    const {data, multi, combo} = this.state
     return (
       <div className='page-container'>
         <div className='page-row'>
@@ -164,6 +291,10 @@ export default class App extends Component {
             dataKey='count'
             dataLabel={['label', 'sublabel', 'subsublabel']}
           />
+        </div>
+        <div className='page-row'>
+          <PreFormatted options={combo} />
+          <PreFormatted options={combo} />
         </div>
       </div>
     )
