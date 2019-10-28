@@ -42,6 +42,9 @@ var PreFormatted = function (_Component) {
           style = _props.style,
           options = _props.options;
 
+      if (!options.axisX) options.axisX = {};
+      options.axisX.interval = 1;
+      options.axisX.labelAngle = 0;
       return _react2.default.createElement(_index2.default, { style: style, options: options });
     }
   }]);

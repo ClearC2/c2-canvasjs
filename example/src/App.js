@@ -114,9 +114,6 @@ export default class App extends Component {
       }
     ],
     combo: {
-      title: {
-        text: 'Formletter Performance'
-      },
       axisY: {
         title: 'Sends and Opt Outs',
         lineColor: '#369EAD',
@@ -135,24 +132,24 @@ export default class App extends Component {
           name: 'Sent',
           dataPoints: [
             {
-              label: 'Form Letter Again-',
-              y: 83
+              label: 'G58 ALLINDUSTRIES \u0022OtherContacts) FL#1',
+              y: 2119
             },
             {
-              label: 'Ticket Notify Formletter',
-              y: 29
+              label: 'Gate 58 Non-Responder C2CRM Formletter',
+              y: 23013
             },
             {
-              label: 'Aiphone New Product Release',
-              y: 2
+              label: 'Inside Sales \u0022Follow-up to voicemail\u0022 email',
+              y: 343
             },
             {
-              label: 'Testing Order Formletter',
-              y: 2
+              label: '*Gate 58 FL #3 (2nd Ed) Processes for Immediate Efficiency',
+              y: 902
             },
             {
-              label: 'Quote Email',
-              y: 29
+              label: 'Inside Sales \u0022Follow-up to voicemail\u0022 email 2',
+              y: 69
             }
           ]
         },
@@ -161,80 +158,81 @@ export default class App extends Component {
           name: 'Opt Outs',
           dataPoints: [
             {
-              label: 'Form Letter Again-',
-              y: 2
+              label: 'G58 ALLINDUSTRIES \u0022OtherContacts) FL#1',
+              y: 38
             },
             {
-              label: 'Ticket Notify Formletter',
-              y: 0
+              label: 'Gate 58 Non-Responder C2CRM Formletter',
+              y: 408
             },
             {
-              label: 'Aiphone New Product Release',
-              y: 0
+              label: 'Inside Sales \u0022Follow-up to voicemail\u0022 email',
+              y: 6
             },
             {
-              label: 'Testing Order Formletter',
-              y: 0
+              label: '*Gate 58 FL #3 (2nd Ed) Processes for Immediate Efficiency',
+              y: 26
             },
             {
-              label: 'Quote Email',
-              y: 0
+              label: 'Inside Sales \u0022Follow-up to voicemail\u0022 email 2',
+              y: 4
             }
           ]
         },
         {
           type: 'spline',
-          yValueFormatString: "#,##0.0\\'%\\'",
+          axisYType: 'secondary',
+          yValueFormatString: '#,##0.0\u0022%\u0022',
           name: 'Open %',
-          axisYType: 'secondary',
           dataPoints: [
             {
-              label: 'Form Letter Again-',
-              y: 92
+              label: 'G58 ALLINDUSTRIES \u0022OtherContacts) FL#1',
+              y: 13
             },
             {
-              label: 'Ticket Notify Formletter',
-              y: 28
-            },
-            {
-              label: 'Aiphone New Product Release',
-              y: 50
-            },
-            {
-              label: 'Testing Order Formletter',
-              y: 0
-            },
-            {
-              label: 'Quote Email',
-              y: 86
-            }
-          ]
-        },
-        {
-          type: 'spline',
-          yValueFormatString: "#,##0.0\\'%\\'",
-          name: 'Click %',
-          axisYType: 'secondary',
-          dataPoints: [
-            {
-              label: 'Form Letter Again-',
+              label: 'Gate 58 Non-Responder C2CRM Formletter',
               y: 14
             },
             {
-              label: 'Ticket Notify Formletter',
-              y: 3
+              label: 'Inside Sales \u0022Follow-up to voicemail\u0022 email',
+              y: 28
             },
             {
-              label: 'Aiphone New Product Release',
-              y: 0
+              label: '*Gate 58 FL #3 (2nd Ed) Processes for Immediate Efficiency',
+              y: 19
             },
             {
-              label: 'Testing Order Formletter',
-              y: 0
+              label: 'Inside Sales \u0022Follow-up to voicemail\u0022 email 2',
+              y: 33
+            }
+          ]
+        },
+        {
+          type: 'spline',
+          axisYType: 'secondary',
+          name: 'Click %',
+          color: '#00FF00',
+          toolTipContent: '{y}% Click',
+          dataPoints: [
+            {
+              label: 'G58 ALLINDUSTRIES \u0022OtherContacts) FL#1',
+              y: 5
             },
             {
-              label: 'Quote Email',
-              y: 0
+              label: 'Gate 58 Non-Responder C2CRM Formletter',
+              y: 1
+            },
+            {
+              label: 'Inside Sales \u0022Follow-up to voicemail\u0022 email',
+              y: 9
+            },
+            {
+              label: '*Gate 58 FL #3 (2nd Ed) Processes for Immediate Efficiency',
+              y: 6
+            },
+            {
+              label: 'Inside Sales \u0022Follow-up to voicemail\u0022 email 2',
+              y: 23
             }
           ]
         }
@@ -293,6 +291,7 @@ export default class App extends Component {
           />
         </div>
         <div className='page-row'>
+          <PreFormatted options={combo} />
           <PreFormatted options={combo} />
           <PreFormatted options={combo} />
         </div>
