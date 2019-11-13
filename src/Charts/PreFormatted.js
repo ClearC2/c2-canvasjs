@@ -15,8 +15,12 @@ export default class PreFormatted extends Component {
   render () {
     const {style, options} = this.props
     if (!options.axisX) options.axisX = {}
-    options.axisX.interval = 1
-    options.axisX.labelAngle = 0
+    if (!options.axisX.interval) {
+      options.axisX.interval = 1
+    }
+    if (!options.axisX.labelAngle) {
+      options.axisX.labelAngle = 0
+    }
     return <Chart style={style} options={options} />
   }
 }
