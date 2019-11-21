@@ -1,9 +1,22 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import CanvasJS from '../canvasjs/canvasjs.min'
-import {isEqual} from 'lodash'
+import isEqual from 'lodash/isEqual'
+import get from 'lodash/get'
+import set from 'lodash/set'
 
 export {CanvasJS}
+
+const systemFont = window
+  .getComputedStyle(document.body, null)
+  .getPropertyValue('font-family')
+
+function applyDefaultOptions (options) {
+  if (!get(options, 'title.fontFamily')) {
+    return set({...options}, 'title.fontFamily', systemFont)
+  }
+  return options
+}
 
 export default class CanvasJSChart extends Component {
   static _cjsContainerId = 0
@@ -25,11 +38,11 @@ export default class CanvasJSChart extends Component {
   }
 
   state = {
-    options: this.props.options
+    options: applyDefaultOptions(this.props.options)
   }
 
   updateOptions = () => {
-    this.setState(() => ({options: this.props.options}))
+    this.setState(() => ({options: applyDefaultOptions(this.props.options)}))
   }
 
   updateChart = () => {
