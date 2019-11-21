@@ -5,9 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CanvasJS = undefined;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _react = require('react');
 
@@ -21,7 +21,17 @@ var _canvasjs = require('../canvasjs/canvasjs.min');
 
 var _canvasjs2 = _interopRequireDefault(_canvasjs);
 
-var _lodash = require('lodash');
+var _isEqual = require('lodash/isEqual');
+
+var _isEqual2 = _interopRequireDefault(_isEqual);
+
+var _get = require('lodash/get');
+
+var _get2 = _interopRequireDefault(_get);
+
+var _set = require('lodash/set');
+
+var _set2 = _interopRequireDefault(_set);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32,6 +42,16 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 exports.CanvasJS = _canvasjs2.default;
+
+
+var systemFont = window.getComputedStyle(document.body, null).getPropertyValue('font-family');
+
+function applyDefaultOptions(options) {
+  if (!(0, _get2.default)(options, 'title.fontFamily')) {
+    return (0, _set2.default)(_extends({}, options), 'title.fontFamily', systemFont);
+  }
+  return options;
+}
 
 var CanvasJSChart = function (_Component) {
   _inherits(CanvasJSChart, _Component);
@@ -48,10 +68,10 @@ var CanvasJSChart = function (_Component) {
     }
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = CanvasJSChart.__proto__ || Object.getPrototypeOf(CanvasJSChart)).call.apply(_ref, [this].concat(args))), _this), _this.chartContainerId = 'canvasjs-react-chart-container-' + CanvasJSChart._cjsContainerId++, _this.state = {
-      options: _this.props.options
+      options: applyDefaultOptions(_this.props.options)
     }, _this.updateOptions = function () {
       _this.setState(function () {
-        return { options: _this.props.options };
+        return { options: applyDefaultOptions(_this.props.options) };
       });
     }, _this.updateChart = function () {
       _this.chart.options = _this.state.options;
@@ -62,7 +82,7 @@ var CanvasJSChart = function (_Component) {
   _createClass(CanvasJSChart, [{
     key: 'componentDidUpdate',
     value: function componentDidUpdate(p, s) {
-      if (!(0, _lodash.isEqual)(this.props.options, p.options) || !(0, _lodash.isEqual)(this.props.style, p.style)) {
+      if (!(0, _isEqual2.default)(this.props.options, p.options) || !(0, _isEqual2.default)(this.props.style, p.style)) {
         this.updateOptions();
       }
       this.updateChart();

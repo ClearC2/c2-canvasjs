@@ -114,6 +114,9 @@ export default class App extends Component {
       }
     ],
     combo: {
+      title: {
+        text: 'Test Title!'
+      },
       axisY: {
         title: 'Sends and Opt Outs',
         lineColor: '#369EAD',
