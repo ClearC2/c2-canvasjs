@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import CanvasJS from '../canvasjs/canvasjs.min'
 import isEqual from 'lodash/isEqual'
 import get from 'lodash/get'
-import set from 'lodash/set'
 
 export {CanvasJS}
 
@@ -13,7 +12,13 @@ const systemFont = window
 
 function applyDefaultOptions (options) {
   if (!get(options, 'title.fontFamily')) {
-    return set({...options}, 'title.fontFamily', systemFont)
+    let fontFamily = systemFont
+    if (systemFont[0] === '"' && systemFont[systemFont.length - 1] === '"') {
+      fontFamily = fontFamily.slice(1, -1)
+    }
+    if (!options.title) options.title = {}
+    if (!options.title.fontFamily) options.title.fontFamily = {}
+    options.title.fontFamily = fontFamily
   }
   return options
 }

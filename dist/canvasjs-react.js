@@ -5,9 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CanvasJS = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
 
@@ -29,10 +29,6 @@ var _get = require('lodash/get');
 
 var _get2 = _interopRequireDefault(_get);
 
-var _set = require('lodash/set');
-
-var _set2 = _interopRequireDefault(_set);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -48,7 +44,13 @@ var systemFont = window.getComputedStyle(document.body, null).getPropertyValue('
 
 function applyDefaultOptions(options) {
   if (!(0, _get2.default)(options, 'title.fontFamily')) {
-    return (0, _set2.default)(_extends({}, options), 'title.fontFamily', systemFont);
+    var fontFamily = systemFont;
+    if (systemFont[0] === '"' && systemFont[systemFont.length - 1] === '"') {
+      fontFamily = fontFamily.slice(1, -1);
+    }
+    if (!options.title) options.title = {};
+    if (!options.title.fontFamily) options.title.fontFamily = {};
+    options.title.fontFamily = fontFamily;
   }
   return options;
 }
