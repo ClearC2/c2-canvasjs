@@ -267,9 +267,11 @@ var Bar = function (_Component) {
         }
       }
     }, _this.componentDidMount = function () {
-      var data = _this.props.data;
+      if (_this.props.controlled) {} else {
+        var data = _this.props.data;
 
-      _this.parseData(data);
+        _this.parseData(data);
+      }
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -290,6 +292,7 @@ var Bar = function (_Component) {
           dataSubFilter = _state.dataSubFilter;
       var style = this.props.style;
 
+      console.log(this.props, this.state, 'props state logggggggg');
       return _react2.default.createElement(
         _index2.default,
         { style: style, options: options },

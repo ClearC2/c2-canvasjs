@@ -254,8 +254,12 @@ export default class Bar extends Component {
   }
 
   componentDidMount = () => {
-    const {data} = this.props
-    this.parseData(data)
+    if (this.props.controlled) {
+
+    } else {
+      const {data} = this.props
+      this.parseData(data)
+    }
   }
 
   componentDidUpdate (p, s) {
@@ -270,6 +274,7 @@ export default class Bar extends Component {
   render () {
     const {options, dataSubFilter} = this.state
     const {style} = this.props
+    console.log(this.props, this.state, 'props state logggggggg')
     return (
       <Chart style={style} options={options}>
         {dataSubFilter.length > 0 && (
