@@ -276,6 +276,20 @@ export default class Bar extends Component {
       ) {
         this.parseData(this.props.data)
       }
+    } else {
+      if (
+        !isEqual(p.data, this.props.data) ||
+        this.state.dataSubFilter.length !== s.dataSubFilter.length
+      ) {
+        this.setState(s => {
+          const {options} = {...s, ...this.props.data}
+
+          options.data = this.props.data.dataPoints
+          // options.data[0].click = this.handleClick
+          return {options}
+        })
+      }
+
     }
   }
 

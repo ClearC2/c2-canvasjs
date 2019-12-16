@@ -287,16 +287,29 @@ var Bar = function (_Component) {
   _createClass(Bar, [{
     key: 'componentDidUpdate',
     value: function componentDidUpdate(p, s) {
+      var _this2 = this;
+
       if (!this.props.controlled) {
         if (!(0, _lodash.isEqual)(p.data, this.props.data) || this.state.dataSubFilter.length !== s.dataSubFilter.length) {
           this.parseData(this.props.data);
+        }
+      } else {
+        if (!(0, _lodash.isEqual)(p.data, this.props.data) || this.state.dataSubFilter.length !== s.dataSubFilter.length) {
+          this.setState(function (s) {
+            var _s$props$data = _extends({}, s, _this2.props.data),
+                options = _s$props$data.options;
+
+            options.data = _this2.props.data.dataPoints;
+            // options.data[0].click = this.handleClick
+            return { options: options };
+          });
         }
       }
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       var _state = this.state,
           options = _state.options,
@@ -331,7 +344,7 @@ var Bar = function (_Component) {
                     userSelect: 'none'
                   },
                   onClick: function onClick() {
-                    return _this2.handleSubFilterRemove(i);
+                    return _this3.handleSubFilterRemove(i);
                   }
                 },
                 i > 0 && ' > ',
