@@ -271,7 +271,7 @@ var Bar = function (_Component) {
         _this.setState(function (s) {
           var options = s.options;
 
-          options.data[0].dataPoints = _this.props.data;
+          options.data = _this.props.data;
           options.data[0].click = _this.handleClick;
           return { options: options };
         });
@@ -284,14 +284,18 @@ var Bar = function (_Component) {
   }
 
   _createClass(Bar, [{
-    key: 'componentDidUpdate',
-    value: function componentDidUpdate(p, s) {
-      if (!(0, _lodash.isEqual)(p.data, this.props.data) || this.state.dataSubFilter.length !== s.dataSubFilter.length) {
-        this.parseData(this.props.data);
-      }
-    }
-  }, {
     key: 'render',
+
+
+    // componentDidUpdate (p, s) {
+    //   if (
+    //     !isEqual(p.data, this.props.data) ||
+    //     this.state.dataSubFilter.length !== s.dataSubFilter.length
+    //   ) {
+    //     this.parseData(this.props.data)
+    //   }
+    // }
+
     value: function render() {
       var _this2 = this;
 
@@ -300,7 +304,7 @@ var Bar = function (_Component) {
           dataSubFilter = _state.dataSubFilter;
       var style = this.props.style;
 
-      console.log(this.props, this.state, 'props state logggggggg');
+      console.log(this.props, this.state, 'props state in canvasjs bar logggggggg');
       return _react2.default.createElement(
         _index2.default,
         { style: style, options: options },

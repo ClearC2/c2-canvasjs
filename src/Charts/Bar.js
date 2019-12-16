@@ -257,7 +257,7 @@ export default class Bar extends Component {
     if (this.props.controlled) {
       this.setState(s => {
         const {options} = s
-        options.data[0].dataPoints = this.props.data
+        options.data = this.props.data
         options.data[0].click = this.handleClick
         return {options}
       })
@@ -267,19 +267,19 @@ export default class Bar extends Component {
     }
   }
 
-  componentDidUpdate (p, s) {
-    if (
-      !isEqual(p.data, this.props.data) ||
-      this.state.dataSubFilter.length !== s.dataSubFilter.length
-    ) {
-      this.parseData(this.props.data)
-    }
-  }
+  // componentDidUpdate (p, s) {
+  //   if (
+  //     !isEqual(p.data, this.props.data) ||
+  //     this.state.dataSubFilter.length !== s.dataSubFilter.length
+  //   ) {
+  //     this.parseData(this.props.data)
+  //   }
+  // }
 
   render () {
     const {options, dataSubFilter} = this.state
     const {style} = this.props
-    console.log(this.props, this.state, 'props state logggggggg')
+    console.log(this.props, this.state, 'props state in canvasjs bar logggggggg')
     return (
       <Chart style={style} options={options}>
         {dataSubFilter.length > 0 && (
