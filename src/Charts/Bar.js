@@ -256,9 +256,9 @@ export default class Bar extends Component {
   componentDidMount = () => {
     if (this.props.controlled) {
       this.setState(s => {
-        const {options} = {...s, ...this.props.data}
+        const {options} = s
 
-        options.data = this.props.data.dataPoints
+        options.data = this.props.data
         // options.data[0].click = this.handleClick
         return {options}
       })
@@ -282,9 +282,8 @@ export default class Bar extends Component {
         this.state.dataSubFilter.length !== s.dataSubFilter.length
       ) {
         this.setState(s => {
-          const {options} = {...s, ...this.props.data}
-
-          options.data = this.props.data.dataPoints
+          const {options} = s
+          options.data = this.props.data
           // options.data[0].click = this.handleClick
           return {options}
         })

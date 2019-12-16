@@ -269,10 +269,10 @@ var Bar = function (_Component) {
     }, _this.componentDidMount = function () {
       if (_this.props.controlled) {
         _this.setState(function (s) {
-          var _s$_this$props$data = _extends({}, s, _this.props.data),
-              options = _s$_this$props$data.options;
+          var options = s.options;
 
-          options.data = _this.props.data.dataPoints;
+
+          options.data = _this.props.data;
           // options.data[0].click = this.handleClick
           return { options: options };
         });
@@ -296,10 +296,9 @@ var Bar = function (_Component) {
       } else {
         if (!(0, _lodash.isEqual)(p.data, this.props.data) || this.state.dataSubFilter.length !== s.dataSubFilter.length) {
           this.setState(function (s) {
-            var _s$props$data = _extends({}, s, _this2.props.data),
-                options = _s$props$data.options;
+            var options = s.options;
 
-            options.data = _this2.props.data.dataPoints;
+            options.data = _this2.props.data;
             // options.data[0].click = this.handleClick
             return { options: options };
           });
