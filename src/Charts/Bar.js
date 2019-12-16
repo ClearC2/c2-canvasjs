@@ -267,14 +267,16 @@ export default class Bar extends Component {
     }
   }
 
-  // componentDidUpdate (p, s) {
-  //   if (
-  //     !isEqual(p.data, this.props.data) ||
-  //     this.state.dataSubFilter.length !== s.dataSubFilter.length
-  //   ) {
-  //     this.parseData(this.props.data)
-  //   }
-  // }
+  componentDidUpdate (p, s) {
+    if (!this.props.controlled) {
+      if (
+        !isEqual(p.data, this.props.data) ||
+        this.state.dataSubFilter.length !== s.dataSubFilter.length
+      ) {
+        this.parseData(this.props.data)
+      }
+    }
+  }
 
   render () {
     const {options, dataSubFilter} = this.state
