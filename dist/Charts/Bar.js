@@ -284,18 +284,16 @@ var Bar = function (_Component) {
   }
 
   _createClass(Bar, [{
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(p, s) {
+      if (!this.props.controlled) {
+        if (!(0, _lodash.isEqual)(p.data, this.props.data) || this.state.dataSubFilter.length !== s.dataSubFilter.length) {
+          this.parseData(this.props.data);
+        }
+      }
+    }
+  }, {
     key: 'render',
-
-
-    // componentDidUpdate (p, s) {
-    //   if (
-    //     !isEqual(p.data, this.props.data) ||
-    //     this.state.dataSubFilter.length !== s.dataSubFilter.length
-    //   ) {
-    //     this.parseData(this.props.data)
-    //   }
-    // }
-
     value: function render() {
       var _this2 = this;
 
