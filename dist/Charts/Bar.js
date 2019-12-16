@@ -269,9 +269,10 @@ var Bar = function (_Component) {
     }, _this.componentDidMount = function () {
       if (_this.props.controlled) {
         _this.setState(function (s) {
-          var options = s.options;
+          var _s$_this$props$data = _extends({}, s, _this.props.data),
+              options = _s$_this$props$data.options;
 
-          options.data = _this.props.data;
+          options.data = _this.props.data.dataPoints;
           options.data[0].click = _this.handleClick;
           return { options: options };
         });
