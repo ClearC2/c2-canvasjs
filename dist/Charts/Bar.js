@@ -267,7 +267,15 @@ var Bar = function (_Component) {
         }
       }
     }, _this.componentDidMount = function () {
-      if (_this.props.controlled) {} else {
+      if (_this.props.controlled) {
+        _this.setState(function (s) {
+          var options = s.options;
+
+          options.data[0].dataPoints = _this.props.data;
+          options.data[0].click = _this.handleClick;
+          return { options: options };
+        });
+      } else {
         var data = _this.props.data;
 
         _this.parseData(data);

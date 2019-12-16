@@ -255,7 +255,12 @@ export default class Bar extends Component {
 
   componentDidMount = () => {
     if (this.props.controlled) {
-
+      this.setState(s => {
+        const {options} = s
+        options.data[0].dataPoints = this.props.data
+        options.data[0].click = this.handleClick
+        return {options}
+      })
     } else {
       const {data} = this.props
       this.parseData(data)
