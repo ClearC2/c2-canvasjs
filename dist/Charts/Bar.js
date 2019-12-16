@@ -273,7 +273,7 @@ var Bar = function (_Component) {
               options = _s$_this$props$data.options;
 
           options.data = _this.props.data.dataPoints;
-          options.data[0].click = _this.handleClick;
+          // options.data[0].click = this.handleClick
           return { options: options };
         });
       } else {

@@ -259,7 +259,7 @@ export default class Bar extends Component {
         const {options} = {...s, ...this.props.data}
 
         options.data = this.props.data.dataPoints
-        options.data[0].click = this.handleClick
+        // options.data[0].click = this.handleClick
         return {options}
       })
     } else {
