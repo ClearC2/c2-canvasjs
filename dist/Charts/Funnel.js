@@ -116,12 +116,23 @@ var Funnel = function (_Component) {
         console.warn('The percentType of ' + percentType + ' is not supported. Falling back to \'exclusive\' (percentages calculated independently).'); // eslint-disable-line
       }
     }, _this.componentDidMount = function () {
-      var _this$props2 = _this.props,
-          data = _this$props2.data,
-          percentType = _this$props2.percentType;
+      if (_this.props.controlled) {
+        _this.setControlledData();
+      } else {
+        var _this$props2 = _this.props,
+            data = _this$props2.data,
+            percentType = _this$props2.percentType;
 
-      _this.parseData(data);
-      _this.verifyPercentType(percentType);
+        _this.parseData(data);
+        _this.verifyPercentType(percentType);
+      }
+    }, _this.setControlledData = function () {
+      _this.setState(function (s) {
+        var options = s.options;
+
+        options.data = _this.props.data;
+        return { options: options };
+      });
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -129,7 +140,11 @@ var Funnel = function (_Component) {
     key: 'componentDidUpdate',
     value: function componentDidUpdate(p) {
       if (!(0, _lodash.isEqual)(p.data, this.props.data)) {
-        this.parseData(this.props.data);
+        if (this.props.controlled) {
+          this.setControlledData();
+        } else {
+          this.parseData(this.props.data);
+        }
       }
     }
   }, {
@@ -159,6 +174,7 @@ Funnel.propTypes = {
   axisX: _propTypes2.default.object,
   axisY: _propTypes2.default.object,
   indexLabelWrap: _propTypes2.default.bool,
+  controlled: _propTypes2.default.bool,
   labelFormatter: _propTypes2.default.func
 };
 Funnel.defaultProps = {

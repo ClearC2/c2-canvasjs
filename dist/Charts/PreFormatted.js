@@ -49,7 +49,6 @@ var PreFormatted = function (_Component) {
       if (!options.axisX.labelAngle) {
         options.axisX.labelAngle = 0;
       }
-      console.log(this.props, this.state, options, 'props state in canvasjs preformatted logggggggg');
       return _react2.default.createElement(_index2.default, { style: style, options: options });
     }
   }]);
