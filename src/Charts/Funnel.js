@@ -125,6 +125,7 @@ export default class Funnel extends Component {
   render () {
     const {options} = this.state
     const {style} = this.props
+    console.log(this.props, this.state, options, 'props state in canvasjs funnel logggggggg')
     return <Chart style={style} options={options} />
   }
 }

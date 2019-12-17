@@ -21,6 +21,7 @@ export default class Bar extends Component {
     axisX: PropTypes.object,
     axisY: PropTypes.object,
     indexLabelWrap: PropTypes.bool,
+    controlled: PropTypes.bool,
     labelFormatter: PropTypes.func
   }
 
@@ -253,15 +254,16 @@ export default class Bar extends Component {
     }
   }
 
+  setControlledData = () => {
+    this.setState(s => {
+      const {options} = s
+      options.data = this.props.data
+      return {options}
+    })
+  }
   componentDidMount = () => {
     if (this.props.controlled) {
-      this.setState(s => {
-        const {options} = s
-
-        options.data = this.props.data
-        // options.data[0].click = this.handleClick
-        return {options}
-      })
+      this.setControlledData()
     } else {
       const {data} = this.props
       this.parseData(data)
@@ -269,26 +271,15 @@ export default class Bar extends Component {
   }
 
   componentDidUpdate (p, s) {
-    if (!this.props.controlled) {
+    if (this.props.controlled) {
+      this.setControlledData()
+    } else {
       if (
         !isEqual(p.data, this.props.data) ||
         this.state.dataSubFilter.length !== s.dataSubFilter.length
       ) {
         this.parseData(this.props.data)
       }
-    } else {
-      if (
-        !isEqual(p.data, this.props.data) ||
-        this.state.dataSubFilter.length !== s.dataSubFilter.length
-      ) {
-        this.setState(s => {
-          const {options} = s
-          options.data = this.props.data
-          // options.data[0].click = this.handleClick
-          return {options}
-        })
-      }
-
     }
   }
 

@@ -268,6 +268,7 @@ var Bar = function (_Component) {
       }
     }, _this.componentDidMount = function () {
       if (_this.props.controlled) {
+
         _this.setState(function (s) {
           var options = s.options;
 
@@ -289,11 +290,7 @@ var Bar = function (_Component) {
     value: function componentDidUpdate(p, s) {
       var _this2 = this;
 
-      if (!this.props.controlled) {
-        if (!(0, _lodash.isEqual)(p.data, this.props.data) || this.state.dataSubFilter.length !== s.dataSubFilter.length) {
-          this.parseData(this.props.data);
-        }
-      } else {
+      if (this.props.controlled) {
         if (!(0, _lodash.isEqual)(p.data, this.props.data) || this.state.dataSubFilter.length !== s.dataSubFilter.length) {
           this.setState(function (s) {
             var options = s.options;
@@ -302,6 +299,10 @@ var Bar = function (_Component) {
             // options.data[0].click = this.handleClick
             return { options: options };
           });
+        }
+      } else {
+        if (!(0, _lodash.isEqual)(p.data, this.props.data) || this.state.dataSubFilter.length !== s.dataSubFilter.length) {
+          this.parseData(this.props.data);
         }
       }
     }
