@@ -17,6 +17,7 @@ export default class Funnel extends Component {
     axisX: PropTypes.object,
     axisY: PropTypes.object,
     indexLabelWrap: PropTypes.bool,
+    controlled: PropTypes.bool,
     labelFormatter: PropTypes.func
   }
 
@@ -111,15 +112,30 @@ export default class Funnel extends Component {
   }
 
   componentDidMount = () => {
-    const {data, percentType} = this.props
-    this.parseData(data)
-    this.verifyPercentType(percentType)
+    if (this.props.controlled) {
+      this.setControlledData()
+    } else {
+      const {data, percentType} = this.props
+      this.parseData(data)
+      this.verifyPercentType(percentType)
+    }
   }
 
   componentDidUpdate (p) {
     if (!isEqual(p.data, this.props.data)) {
-      this.parseData(this.props.data)
+      if (this.props.controlled) {
+        this.setControlledData()
+      } else {
+        this.parseData(this.props.data)
+      }
     }
+  }
+  setControlledData = () => {
+    this.setState(s => {
+      const {options} = s
+      options.data = this.props.data
+      return {options}
+    })
   }
 
   render () {
