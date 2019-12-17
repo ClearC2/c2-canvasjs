@@ -288,7 +288,9 @@ var Bar = function (_Component) {
     key: 'componentDidUpdate',
     value: function componentDidUpdate(p, s) {
       if (this.props.controlled) {
-        this.setControlledData();
+        if (!(0, _lodash.isEqual)(p.data, this.props.data)) {
+          this.setControlledData();
+        }
       } else {
         if (!(0, _lodash.isEqual)(p.data, this.props.data) || this.state.dataSubFilter.length !== s.dataSubFilter.length) {
           this.parseData(this.props.data);

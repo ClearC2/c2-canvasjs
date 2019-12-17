@@ -272,7 +272,9 @@ export default class Bar extends Component {
 
   componentDidUpdate (p, s) {
     if (this.props.controlled) {
-      this.setControlledData()
+      if (!isEqual(p.data, this.props.data)) {
+        this.setControlledData()
+      }
     } else {
       if (
         !isEqual(p.data, this.props.data) ||
