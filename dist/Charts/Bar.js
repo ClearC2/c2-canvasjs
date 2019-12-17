@@ -266,17 +266,16 @@ var Bar = function (_Component) {
           });
         }
       }
+    }, _this.setControlledData = function () {
+      _this.setState(function (s) {
+        var options = s.options;
+
+        options.data = _this.props.data;
+        return { options: options };
+      });
     }, _this.componentDidMount = function () {
       if (_this.props.controlled) {
-
-        _this.setState(function (s) {
-          var options = s.options;
-
-
-          options.data = _this.props.data;
-          // options.data[0].click = this.handleClick
-          return { options: options };
-        });
+        _this.setControlledData();
       } else {
         var data = _this.props.data;
 
@@ -288,18 +287,8 @@ var Bar = function (_Component) {
   _createClass(Bar, [{
     key: 'componentDidUpdate',
     value: function componentDidUpdate(p, s) {
-      var _this2 = this;
-
       if (this.props.controlled) {
-        if (!(0, _lodash.isEqual)(p.data, this.props.data) || this.state.dataSubFilter.length !== s.dataSubFilter.length) {
-          this.setState(function (s) {
-            var options = s.options;
-
-            options.data = _this2.props.data;
-            // options.data[0].click = this.handleClick
-            return { options: options };
-          });
-        }
+        this.setControlledData();
       } else {
         if (!(0, _lodash.isEqual)(p.data, this.props.data) || this.state.dataSubFilter.length !== s.dataSubFilter.length) {
           this.parseData(this.props.data);
@@ -309,7 +298,7 @@ var Bar = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this3 = this;
+      var _this2 = this;
 
       var _state = this.state,
           options = _state.options,
@@ -344,7 +333,7 @@ var Bar = function (_Component) {
                     userSelect: 'none'
                   },
                   onClick: function onClick() {
-                    return _this3.handleSubFilterRemove(i);
+                    return _this2.handleSubFilterRemove(i);
                   }
                 },
                 i > 0 && ' > ',
@@ -376,6 +365,7 @@ Bar.propTypes = {
   axisX: _propTypes2.default.object,
   axisY: _propTypes2.default.object,
   indexLabelWrap: _propTypes2.default.bool,
+  controlled: _propTypes2.default.bool,
   labelFormatter: _propTypes2.default.func
 };
 Bar.defaultProps = {
