@@ -307,7 +307,6 @@ var Bar = function (_Component) {
           dataSubFilter = _state.dataSubFilter;
       var style = this.props.style;
 
-      console.log(this.props, this.state, 'props state in canvasjs bar logggggggg');
       return _react2.default.createElement(
         _index2.default,
         { style: style, options: options },

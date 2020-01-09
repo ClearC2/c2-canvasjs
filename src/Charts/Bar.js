@@ -288,7 +288,6 @@ export default class Bar extends Component {
   render () {
     const {options, dataSubFilter} = this.state
     const {style} = this.props
-    console.log(this.props, this.state, 'props state in canvasjs bar logggggggg')
     return (
       <Chart style={style} options={options}>
         {dataSubFilter.length > 0 && (

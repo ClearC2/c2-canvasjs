@@ -127,7 +127,6 @@ export default class Pie extends Component {
   render () {
     const {options} = this.state
     const {style} = this.props
-    console.log(this.props, this.state, options, 'props state in canvasjs pie logggggggg')
     return <Chart style={style} options={options} />
   }
 }

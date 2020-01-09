@@ -153,7 +153,6 @@ var Funnel = function (_Component) {
       var options = this.state.options;
       var style = this.props.style;
 
-      console.log(this.props, this.state, options, 'props state in canvasjs funnel logggggggg');
       return _react2.default.createElement(_index2.default, { style: style, options: options });
     }
   }]);
