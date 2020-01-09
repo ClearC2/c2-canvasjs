@@ -102,17 +102,34 @@ var Pie = function (_Component) {
         });
       }
     }, _this.componentDidMount = function () {
-      var data = _this.props.data;
+      if (_this.props.controlled) {
+        _this.setControlledData();
+      } else {
+        var data = _this.props.data;
 
-      _this.parseData(data);
+        _this.parseData(data);
+      }
+    }, _this.setControlledData = function () {
+      _this.setState(function (s) {
+        var options = s.options;
+
+        options.data = _this.props.data;
+        return { options: options };
+      });
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(Pie, [{
     key: 'componentDidUpdate',
     value: function componentDidUpdate(p) {
-      if (!(0, _lodash.isEqual)(p.data, this.props.data)) {
-        this.parseData(this.props.data);
+      if (this.props.controlled) {
+        if (!(0, _lodash.isEqual)(p.data, this.props.data)) {
+          this.setControlledData();
+        }
+      } else {
+        if (!(0, _lodash.isEqual)(p.data, this.props.data)) {
+          this.parseData(this.props.data);
+        }
       }
     }
   }, {
@@ -141,6 +158,7 @@ Pie.propTypes = {
   axisX: _propTypes2.default.object,
   axisY: _propTypes2.default.object,
   indexLabelWrap: _propTypes2.default.bool,
+  controlled: _propTypes2.default.bool,
   labelFormatter: _propTypes2.default.func
 };
 Pie.defaultProps = {
