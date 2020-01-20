@@ -134,7 +134,7 @@ export default class Funnel extends Component {
   setControlledData = () => {
     this.setState(s => {
       let {options} = s
-      options = {...this.state.options, ...this.props.options}
+      options = {...options, ...this.props.options}
       options.data = this.props.data
       return {options}
     })

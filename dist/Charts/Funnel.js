@@ -130,7 +130,7 @@ var Funnel = function (_Component) {
       _this.setState(function (s) {
         var options = s.options;
 
-        options = _extends({}, _this.state.options, _this.props.options);
+        options = _extends({}, options, _this.props.options);
         options.data = _this.props.data;
         return { options: options };
       });
