@@ -113,7 +113,7 @@ var Pie = function (_Component) {
       _this.setState(function (s) {
         var options = s.options;
 
-        options.data = _extends({}, _this.state.options, _this.props.data);
+        options.data = _this.props.data;
         return { options: options };
       });
     }, _temp), _possibleConstructorReturn(_this, _ret);
