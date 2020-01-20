@@ -119,7 +119,7 @@ export default class Pie extends Component {
   setControlledData = () => {
     this.setState(s => {
       const {options} = s
-      options.data = {...this.state.options, ...this.props.data}
+      options.data = this.props.data
       return {options}
     })
   }
