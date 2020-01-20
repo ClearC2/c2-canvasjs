@@ -15,6 +15,7 @@ export default class Funnel extends Component {
     style: PropTypes.object,
     onClick: PropTypes.func,
     axisX: PropTypes.object,
+    options: PropTypes.object,
     axisY: PropTypes.object,
     indexLabelWrap: PropTypes.bool,
     controlled: PropTypes.bool,
@@ -132,7 +133,8 @@ export default class Funnel extends Component {
   }
   setControlledData = () => {
     this.setState(s => {
-      const {options} = s
+      let {options} = s
+      options = {...this.state.options, ...this.props.options}
       options.data = this.props.data
       return {options}
     })
