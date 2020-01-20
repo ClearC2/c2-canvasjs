@@ -130,6 +130,7 @@ var Funnel = function (_Component) {
       _this.setState(function (s) {
         var options = s.options;
 
+        options = _extends({}, _this.state.options, _this.props.options);
         options.data = _this.props.data;
         return { options: options };
       });
@@ -171,6 +172,7 @@ Funnel.propTypes = {
   style: _propTypes2.default.object,
   onClick: _propTypes2.default.func,
   axisX: _propTypes2.default.object,
+  options: _propTypes2.default.object,
   axisY: _propTypes2.default.object,
   indexLabelWrap: _propTypes2.default.bool,
   controlled: _propTypes2.default.bool,

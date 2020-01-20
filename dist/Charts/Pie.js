@@ -113,6 +113,7 @@ var Pie = function (_Component) {
       _this.setState(function (s) {
         var options = s.options;
 
+        options = _extends({}, _this.state.options, _this.props.options);
         options.data = _this.props.data;
         return { options: options };
       });
@@ -157,6 +158,7 @@ Pie.propTypes = {
   doughnut: _propTypes2.default.bool,
   axisX: _propTypes2.default.object,
   axisY: _propTypes2.default.object,
+  options: _propTypes2.default.object,
   indexLabelWrap: _propTypes2.default.bool,
   controlled: _propTypes2.default.bool,
   labelFormatter: _propTypes2.default.func
