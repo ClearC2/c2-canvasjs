@@ -182,7 +182,6 @@ Funnel.defaultProps = {
   toolTipContent: '<b>{label}</b>: {y} <b>({percentage}%)</b>',
   indexLabel: '{label} {y} ({percentage}%)',
   indexLabelPlacement: 'outside',
-  indexLabelWrap: false,
   data: [],
   dataKey: 'count',
   dataLabel: 'label',
